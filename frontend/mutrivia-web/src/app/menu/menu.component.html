@@ -1,0 +1,36 @@
+<button (click)="onClickHostSession()" type="button" style="height: 15vh;" class="btn btn-primary btn-lg col-12 mt-3">Host a new Session</button>
+<button (click)="onClickJoinSession()" type="button" style="height: 15vh;" class="btn btn-success btn-lg col-12 mt-3">Join a Session</button>
+<button (click)="onClickSoloSession()" type="button" style="height: 15vh;" class="btn btn-secondary btn-lg col-12 mt-3">Play Solo</button>
+
+<div *ngIf="joinSessionClicked">
+    <form (ngSubmit)="enterSessionId()">
+        <div class="mt-4">
+            <input type="text" class="form-control" placeholder="Enter Session ID" name="sessionId" [(ngModel)]="sessionId" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Join</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="hostSessionClicked">
+    <form (ngSubmit)="enterMuseumIdHost()">
+        <div class="mt-4">
+            <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Start</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="soloSessionClicked">
+    <form (ngSubmit)="enterMuseumIdSolo()">
+        <div class="mt-4">
+            <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Start</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ErrorComponent } from './error/error.component';
+import { GameViewHostComponent } from './game-view-host/game-view-host.component';
+import { GameViewParticipantComponent } from './game-view-participant/game-view-participant.component';
+import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component';
+import { MenuComponent } from './menu/menu.component';
+import { RegisterComponent } from './register/register.component';
+
+const routes: Routes = [
+  {path:'', component:RegisterComponent},
+  {path:'register', component:RegisterComponent},
+  {path:'menu', component:MenuComponent},
+  {path:'host', component:GameViewHostComponent},
+  {path:'participant', component:GameViewParticipantComponent},
+  {path:'solo', component:GameViewSoloComponent},
+  {path:'**', component:ErrorComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

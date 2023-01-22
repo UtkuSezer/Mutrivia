@@ -1,0 +1,53 @@
+
+<div *ngIf="isGameStarted">
+    <h4>Your Score: {{myUser.score}}</h4>
+    <h5>Timer: {{timeLeft}}</h5>
+    <div class="row">
+    <div *ngIf="currentQuestion != null" class="col-8 mt-4">
+        <h4>{{currentQuestion.questionStatement}}</h4>
+        <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
+            <button (click)="onClickOption(i)" type="button" class="btn btn-outline-secondary mt-3">{{choice}}</button>
+        </div>
+    </div>
+    <div *ngIf="currentQuestion == null" class="col-8 mt-4">
+        <h4>Loading Question...</h4>
+    </div>
+    <div class="col-4">
+        <table style="max-height:100%; overflow:auto" class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.username}}</td>
+                    <td>{{user.score}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <button (click)="onClickLeaveSession()" class="btn btn-danger mt-4">Leave Session</button>
+</div>
+
+<div *ngIf="!isGameStarted">
+    <h4>Session ID: {{myUser.sessionId}}</h4>
+    <h5 style="color: rgb(0, 139, 204);" class="mt-4">Waiting for host to start the game.</h5>
+    <table style="max-height:100%; overflow:auto" class="table mt-3">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{user.userId}}</td>
+                <td>{{user.username}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="onClickLeaveSession()" class="btn btn-danger">Leave Session</button>
+</div>

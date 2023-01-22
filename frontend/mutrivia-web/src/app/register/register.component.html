@@ -1,0 +1,13 @@
+<h1>Welcome to Mutrivia</h1>
+
+<div class="container mt-5">
+    <h4 style="color:rgb(131, 130, 130)">Pick a nickname to start playing.</h4>
+    <form (ngSubmit)="registerUser()">
+        <div class="mt-4">
+            <input type="text" class="form-control-lg" placeholder="Enter a Nickname" name="username" [(ngModel)]="username" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Start</button>
+        </div>
+    </form>
+</div>
