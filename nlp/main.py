@@ -5,6 +5,7 @@ import json
 nltk.download('stopwords')
 
 qg = main.QGen()
+<<<<<<< Updated upstream
 #open text file
 end = False
 with open("questions.txt", "w") as f:
@@ -56,3 +57,12 @@ with open("questions.txt", "w") as f:
 This three-bolt diving helmet and suit were made in Russia in 1983. The basic design of the helmet is similar to the British Siebe-Gorman 12-bolt from the 1840s, and is still in production (for collectors) today! It is designed to be used with compressed air, not the more sophisticated mixed-gas technology used for deeper diving.
 In order to navigate at sea, one must know the true time as well as the angular measurement to sun or stars. The marine chronometer is especially designed to keep accurate time at sea, despite the stresses of motion and temperature change.Keeps on running precisely one day.                           
 """
+=======
+
+payload = {
+            "input_text": "This three-bolt diving helmet and suit were made in Russia in 1983. The basic design of the helmet is similar to the British Siebe-Gorman 12-bolt from the 1840s, and is still in production (for collectors) today! It is designed to be used with compressed air, not the more sophisticated mixed-gas technology used for deeper diving"
+        }
+
+output = qg.predict_mcq(payload)
+print(output)
+>>>>>>> Stashed changes
