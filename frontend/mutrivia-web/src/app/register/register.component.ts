@@ -21,7 +21,10 @@ export class RegisterComponent implements OnInit {
       data => {
         sessionStorage.removeItem('userId')
       }
-    )}   
+    )}
+    if(sessionStorage.getItem('isAdmin')){
+      sessionStorage.removeItem('isAdmin')
+    }   
   }
 
   registerUser(){

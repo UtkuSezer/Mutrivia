@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TextDataRepository extends CrudRepository<TextData, String> {
     List<TextData> findByMuseumId(String museumId);
+    List<TextData> findByText(String text);
 }

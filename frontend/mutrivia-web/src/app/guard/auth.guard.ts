@@ -7,6 +7,14 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (route.url[0].path == 'admin'){
+            if (this.isAdmin(route, state)){
+                return true
+            }
+            else{
+                return false
+            }
+        }
         if (sessionStorage.getItem('userId')) {
             if (route.url[0].path == 'menu'){
                 return true
@@ -55,6 +63,17 @@ export class AuthGuard implements CanActivate {
             // not logged in so redirect to login page with the return url
             this.router.navigate(["register"]); 
         }
+        return false;
+    }
+
+    isAdmin(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        if (sessionStorage.getItem("isAdmin")) {
+            // user is host so return true
+            return true;
+        }
+
+        // not a host so redirect to login page with the return url
+        this.router.navigate(["adminauth"]);
         return false;
     }
 

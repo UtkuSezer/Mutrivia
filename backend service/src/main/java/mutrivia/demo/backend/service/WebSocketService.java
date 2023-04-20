@@ -26,8 +26,8 @@ public class WebSocketService {
         this.messagingTemplate.convertAndSend("/topic/deleteuser/" + sessionId, userId);
     }
 
-    public void sendQuestionMessage(Question question) {
-        this.messagingTemplate.convertAndSend("/topic/question/" + question.getUserId(), question);
+    public void sendQuestionMessage(Question question, String userId) {
+        this.messagingTemplate.convertAndSend("/topic/question/" + userId, question);
     }
 
     public void sendStartSessionMessage(String sessionId) {

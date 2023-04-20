@@ -9,7 +9,7 @@ public class TextSender {
     @Autowired
     private RabbitTemplate template;
 
-    public void send(String text, String userId){
-        this.template.convertAndSend("text", text + "#*$*#" + userId);
+    public void send(String text, String textDataId){
+        this.template.convertAndSend("text", text + "#*$*#" + textDataId);
     }
 }

@@ -19,6 +19,18 @@ public class TextDataService {
     }
 
     public TextData addTextData(TextData textData){
+        List<TextData> textDataList = textDataRepository.findByText(textData.getText());
+        if(textDataList.size()>0){
+            for(TextData textDataIteration: textDataList){
+                if(textDataIteration.getMuseumId().equals(textData.getMuseumId())){
+                    return null;
+                }
+            }
+        }
         return textDataRepository.save(textData);
+    }
+
+    public void deleteTextData(String textDataId){
+        textDataRepository.deleteById(textDataId);
     }
 }

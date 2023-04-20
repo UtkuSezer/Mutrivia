@@ -1,0 +1,14 @@
+<h1>Admin Panel</h1>
+
+<div class="container mt-5">
+    <h4 style="color:rgb(131, 130, 130)">Generate Question</h4>
+    <form (ngSubmit)="sendText()">
+        <div class="mt-4">
+            <input type="text" class="form-control-sm" placeholder="Museum ID" name="ID" [(ngModel)]="museumId" required><br>
+            <textarea class="form-control mt-3" placeholder="Enter artifact text here" id="artifactTextArea" name="message" rows="4" [(ngModel)]="artifactText" #message='ngModel' required></textarea>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Generate</button>
+        </div>
+    </form>
+</div>

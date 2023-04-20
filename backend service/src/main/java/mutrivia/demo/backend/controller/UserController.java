@@ -62,8 +62,6 @@ public class UserController {
         long userScore = user.getScore();
         user.setScore(userScore+points);
         userService.updateUser(user);
-        webSocketService.sendDeleteUserMessage(userId, user.getSessionId());
-        webSocketService.sendNewUserMessage(user, user.getSessionId());
         return user;
     }
 

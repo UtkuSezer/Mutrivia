@@ -15,6 +15,8 @@ import { GameViewParticipantComponent } from './game-view-participant/game-view-
 import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component';
 import { AuthGuard } from './guard/auth.guard';
 import { GameoverComponent } from './gameover/gameover.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminAuthComponent } from './admin-auth/admin-auth.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { GameoverComponent } from './gameover/gameover.component';
     GameViewHostComponent,
     GameViewParticipantComponent,
     GameViewSoloComponent,
-    GameoverComponent
+    GameoverComponent,
+    AdminComponent,
+    AdminAuthComponent
   ],
   imports: [
     BrowserModule,

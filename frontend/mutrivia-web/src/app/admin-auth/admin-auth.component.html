@@ -1,0 +1,14 @@
+<h1>Admin Panel</h1>
+
+<div class="container mt-5">
+    <h4 style="color:rgb(131, 130, 130)">Authentication</h4>
+    <form (ngSubmit)="authenticate()">
+        <div class="mt-4">
+            <input type="text" class="form-control-lg" placeholder="ID" name="ID" [(ngModel)]="id" required><br>
+            <input type="password" class="form-control-lg mt-3" placeholder="Password" name="Password" [(ngModel)]="password" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+    </form>
+</div>

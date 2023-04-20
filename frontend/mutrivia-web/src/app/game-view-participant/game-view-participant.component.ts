@@ -16,6 +16,7 @@ export class GameViewParticipantComponent implements OnInit {
 
   users: User[] = []
   isGameStarted: boolean = false
+  isGamePaused: boolean = false
   myUser!: User
   currentQuestion!: Question
 
@@ -27,7 +28,7 @@ export class GameViewParticipantComponent implements OnInit {
   deleteSessionTopic: string = "/topic/deletesession/";
   startSessionTopic: string = "/topic/startsession/";
 
-  timeLeft: number = 60;
+  timeLeft: number = 30;
   interval !: any;
 
   constructor(private userDataService: UserDataService,
@@ -35,11 +36,8 @@ export class GameViewParticipantComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
-      data => {
-        this.users = data;
-      }
-    )
+    this.pauseTimer();
+    this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.myUser = data;
@@ -49,18 +47,33 @@ export class GameViewParticipantComponent implements OnInit {
     )
   }
 
+  setUsers() {
+    this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
+      data => {
+        this.users = data;
+        this.users.sort((firstUser, secondUser) => secondUser.score - firstUser.score);
+      }
+    )
+  }
+
   startTimer() {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        this.timeLeft = 60;
+        this.pauseTimer();
+        this.setUsers();
+        this.isGamePaused = true
       }
     },1000)
   }
 
   pauseTimer() {
     clearInterval(this.interval);
+  }
+
+  resetTimer(){
+    this.timeLeft = 30;
   }
 
   onClickLeaveSession(){
@@ -79,7 +92,6 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onClickOption(i:number){
-    this.pauseTimer()
     if(this.currentQuestion.correctChoiceIndex == i){
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
@@ -144,7 +156,8 @@ export class GameViewParticipantComponent implements OnInit {
   onQuestionMessageReceived(message: any) {
     let question: Question = JSON.parse(message.body);
     this.currentQuestion = question;
-    this.timeLeft = 60;
+    this.resetTimer();
+    this.isGamePaused = false
     this.startTimer()
   }
   onNewUserMessageReceived(message: any) {

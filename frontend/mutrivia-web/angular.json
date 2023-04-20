@@ -102,5 +102,8 @@
       }
     }
   },
-  "defaultProject": "mutrivia-web"
+  "defaultProject": "mutrivia-web",
+  "cli": {
+    "analytics": "d8bdddb1-3f0d-4baa-8304-b2bf4c2e28f9"
+  }
 }

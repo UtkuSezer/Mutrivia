@@ -19,15 +19,19 @@ public class GameService {
     private UserService userService;
     private SessionService sessionService;
     private TextDataService textDataService;
+    private QuestionService questionService;
     private TextSender textSender;
     private QuestionReceiver questionReceiver;
+    private WebSocketService webSocketService;
 
-    public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, TextSender textSender, QuestionReceiver questionReceiver) {
+    public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, QuestionService questionService, TextSender textSender, QuestionReceiver questionReceiver, WebSocketService webSocketService) {
         this.userService = userService;
         this.sessionService = sessionService;
         this.textDataService = textDataService;
+        this.questionService = questionService;
         this.textSender = textSender;
         this.questionReceiver = questionReceiver;
+        this.webSocketService = webSocketService;
     }
 
     public void generateQuestion(String userId){
@@ -42,7 +46,24 @@ public class GameService {
                 " mixed-gas technology used for deeper diving";
         List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
         for(User user: usersInSession){
-            textSender.send(textToUse, user.getUserId());
+            //textSender.send(textToUse, user.getUserId());
+        }
+    }
+
+    public void changeSessionQuestion(String userId){
+        User host = userService.findUserById(userId);
+
+        List<TextData> textDataList = textDataService.findTextDataByMuseumId(host.getMuseumId());
+        System.out.println(textDataList.toString());
+        int randomTextDataIndex = (int)(Math.random() * textDataList.size());
+        String textDataIdToUse = textDataList.get(randomTextDataIndex).getTextDataId();
+        List<Question> questionList = questionService.findQuestionByTextId(textDataIdToUse);
+
+        List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
+        for(User user: usersInSession){
+            int randomQuestionIndex = (int)(Math.random() * questionList.size());
+            Question userQuestion = questionList.get(randomQuestionIndex);
+            webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
         }
     }
 

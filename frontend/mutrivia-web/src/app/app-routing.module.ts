@@ -8,6 +8,8 @@ import { GameoverComponent } from './gameover/gameover.component';
 import { AuthGuard } from './guard/auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminAuthComponent } from './admin-auth/admin-auth.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   {path:'', component:RegisterComponent},
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path:'participant', component:GameViewParticipantComponent, canActivate: [AuthGuard]},
   {path:'solo', component:GameViewSoloComponent, canActivate: [AuthGuard]},
   {path:'gameover', component:GameoverComponent},
+  {path:'adminauth', component:AdminAuthComponent},
+  {path:'admin', component:AdminComponent, canActivate: [AuthGuard]},
   {path:'**', component:ErrorComponent}
 ];
 

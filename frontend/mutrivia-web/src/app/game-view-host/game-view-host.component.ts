@@ -17,6 +17,7 @@ export class GameViewHostComponent implements OnInit {
 
   users: User[] = []
   isGameStarted: boolean = false
+  isGamePaused: boolean = false
   myUser!: User
   currentQuestion!: Question
 
@@ -26,24 +27,33 @@ export class GameViewHostComponent implements OnInit {
   newUserTopic: string = "/topic/newuser/";
   deleteUserTopic: string = "/topic/deleteuser/";
 
-  timeLeft: number = 60;
+  timeLeft: number = 30;
   interval !: any;
+  pauseInterval !: any;
+  pauseTimeLeft: number = 5;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
-      data => {
-        this.users = data;
-      }
-    )
+    this.pauseTimer();
+    this.pausePauseTimer();
+    this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.myUser = data
         this.setTopics()
         this.connect()
+      }
+    )
+  }
+
+  setUsers() {
+    this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
+      data => {
+        this.users = data;
+        this.users.sort((firstUser, secondUser) => secondUser.score - firstUser.score);
       }
     )
   }
@@ -57,7 +67,7 @@ export class GameViewHostComponent implements OnInit {
   onClickGenerateQuestion(){
     this.gameDataService.generateQuestion(sessionStorage.getItem('userId') as string).subscribe(
       data => {
-        this.currentQuestion = data
+        //this.currentQuestion = data
       }
     )
   }
@@ -81,7 +91,7 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickOption(i:number){
-    this.pauseTimer()
+    //this.pauseTimer()
     if(this.currentQuestion.correctChoiceIndex == i){
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
@@ -99,13 +109,41 @@ export class GameViewHostComponent implements OnInit {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        this.timeLeft = 60;
+        this.resetPauseTimer();
+        this.setUsers();
+        this.isGamePaused = true;
+        this.startPauseTimer();
+        this.pauseTimer();
       }
     },1000)
   }
 
+  resetTimer(){
+    this.timeLeft = 30
+  }
+
   pauseTimer() {
     clearInterval(this.interval);
+  }
+
+  startPauseTimer() {
+    this.pauseInterval = setInterval(() => {
+      if(this.pauseTimeLeft > 0) {
+        this.pauseTimeLeft--;
+      } else {
+        this.isGamePaused = false;
+        this.onClickGenerateQuestion();
+        this.pausePauseTimer();
+      }
+    },1000)
+  }
+
+  pausePauseTimer() {
+    clearInterval(this.pauseInterval);
+  }
+
+  resetPauseTimer() {
+    this.pauseTimeLeft = 10
   }
   
   //WebSocket ------------------------------------------------------------------------------
@@ -146,7 +184,7 @@ export class GameViewHostComponent implements OnInit {
   onQuestionMessageReceived(message: any) {
     let question: Question = JSON.parse(message.body);
     this.currentQuestion = question;
-    this.timeLeft = 60;
+    this.resetTimer();
     this.startTimer()
   }
   onNewUserMessageReceived(message: any) {
