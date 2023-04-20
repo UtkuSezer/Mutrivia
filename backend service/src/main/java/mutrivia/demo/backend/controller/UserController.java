@@ -33,6 +33,9 @@ public class UserController {
     @GetMapping("/session/{userId}")
     public List<User> getUsersInSession(@PathVariable String userId){
         String sessionId = userService.findUserById(userId).getSessionId();
+        if(sessionId.equals("initial")){
+            return null;
+        }
         return userService.findUsersInSession(sessionId);
     }
 

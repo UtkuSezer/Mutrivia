@@ -16,13 +16,6 @@ export class HeaderComponent implements OnInit {
   }
 
   goHome(){
-    //TODO: Request
-    this.userDataService.deleteUser(sessionStorage.getItem('userId') as string).subscribe(
-      data => {
-        console.log("User with ID: " + sessionStorage.getItem("userId") + " is deleted.");
-        sessionStorage.removeItem("userId");
-      }
-    )
     this.router.navigate(["register"]);
   }
 

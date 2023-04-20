@@ -1,0 +1,26 @@
+<h3 class="text-primary">Quiz Finished!</h3>
+<h4 style="color:rgb(131, 130, 130)">Winners:</h4>
+
+<div class="container mt-3 mb-3">
+<h6>1. {{users[0].username}} - {{users[0].score}}</h6>
+<h6>2. {{users[1].username}} - {{users[1].score}}</h6>
+<h6>3. {{users[2].username}} - {{users[2].score}}</h6>
+</div>
+<div class="col-4">
+    <table style="max-height:100%; overflow:auto" class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users.slice(3,users.length)">
+                <td>{{user.username}}</td>
+                <td>{{user.score}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button (click)="onClickEndSession()" class="btn btn-primary mt-4">Continue to Main Menu</button>

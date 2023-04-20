@@ -34,7 +34,7 @@ export class GameViewSoloComponent implements OnInit {
         this.myUser = data
         this.setTopics()
         this.connect()
-        //this.onClickGenerateQuestion()
+        this.onClickGenerateQuestion()
       }
     )
   }
@@ -80,6 +80,7 @@ export class GameViewSoloComponent implements OnInit {
   onClickLeaveGame(){
     this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
+        sessionStorage.removeItem("isSolo");
         this.router.navigate(['menu']);
       }
     )

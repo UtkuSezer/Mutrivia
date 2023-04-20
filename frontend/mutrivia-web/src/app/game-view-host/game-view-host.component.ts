@@ -72,10 +72,10 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickEndSession(){
-    this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+    this.gameDataService.switchToResults(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false
-        this.router.navigate(['menu'])
+        this.router.navigate(['gameover'])
       }
     )
   }

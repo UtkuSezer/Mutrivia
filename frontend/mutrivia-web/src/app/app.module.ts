@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { GameViewHostComponent } from './game-view-host/game-view-host.component';
 import { GameViewParticipantComponent } from './game-view-participant/game-view-participant.component';
 import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component';
+import { AuthGuard } from './guard/auth.guard';
+import { GameoverComponent } from './gameover/gameover.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component
     ErrorComponent,
     GameViewHostComponent,
     GameViewParticipantComponent,
-    GameViewSoloComponent
+    GameViewSoloComponent,
+    GameoverComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -67,9 +67,15 @@ export class GameViewParticipantComponent implements OnInit {
     this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false;
+        sessionStorage.removeItem("isParticipant");
         this.router.navigate(['menu'])
       }
     )
+  }
+
+  onSessionEndedByHost(){
+    this.isGameStarted = false;
+    this.router.navigate(['gameover'])
   }
 
   onClickOption(i:number){
@@ -156,7 +162,7 @@ export class GameViewParticipantComponent implements OnInit {
   onDeleteSessionMessageReceived(message: any) {
     let sessionId: string = (message.body as string);
     if(sessionId === this.myUser.sessionId){
-      this.onClickLeaveSession();
+      this.onSessionEndedByHost();
     }
   }
   onStartSessionMessageReceived(message: any) {

@@ -73,10 +73,16 @@ public class GameController {
         gameService.leaveSession(user);
     }
 
+    @GetMapping("/results/{userId}")
+    public void switchToResults(@PathVariable String userId){
+        User user = userService.findUserById(userId);
+        webSocketService.sendDeleteSessionMessage(user.getSessionId());
+    }
+
     @GetMapping("/end/{userId}")
     public void endSession(@PathVariable String userId){
         User user = userService.findUserById(userId);
-        webSocketService.sendDeleteSessionMessage(user.getSessionId());
+        //webSocketService.sendDeleteSessionMessage(user.getSessionId());
         gameService.endSession(userId);
     }
 }

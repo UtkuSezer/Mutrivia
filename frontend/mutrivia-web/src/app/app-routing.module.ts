@@ -4,16 +4,19 @@ import { ErrorComponent } from './error/error.component';
 import { GameViewHostComponent } from './game-view-host/game-view-host.component';
 import { GameViewParticipantComponent } from './game-view-participant/game-view-participant.component';
 import { GameViewSoloComponent } from './game-view-solo/game-view-solo.component';
+import { GameoverComponent } from './gameover/gameover.component';
+import { AuthGuard } from './guard/auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {path:'', component:RegisterComponent},
   {path:'register', component:RegisterComponent},
-  {path:'menu', component:MenuComponent},
-  {path:'host', component:GameViewHostComponent},
-  {path:'participant', component:GameViewParticipantComponent},
-  {path:'solo', component:GameViewSoloComponent},
+  {path:'menu', component:MenuComponent, canActivate: [AuthGuard]},
+  {path:'host', component:GameViewHostComponent, canActivate: [AuthGuard]},
+  {path:'participant', component:GameViewParticipantComponent, canActivate: [AuthGuard]},
+  {path:'solo', component:GameViewSoloComponent, canActivate: [AuthGuard]},
+  {path:'gameover', component:GameoverComponent},
   {path:'**', component:ErrorComponent}
 ];
 

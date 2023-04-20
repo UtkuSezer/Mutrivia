@@ -27,6 +27,7 @@ export class MenuComponent implements OnInit {
     this.gameDataService.hostSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
         console.log("Session ID: " + data.sessionId);
+        sessionStorage.setItem('isHost', "true")
         this.router.navigate(['host'])
       }
     )
@@ -35,6 +36,7 @@ export class MenuComponent implements OnInit {
     console.log("Join session with ID: " + this.sessionId)
     this.gameDataService.joinSession(this.sessionId, sessionStorage.getItem('userId') as string).subscribe(
       data => {
+        sessionStorage.setItem('isParticipant', "true")
         this.router.navigate(['participant'])
       }
     )
@@ -44,6 +46,7 @@ export class MenuComponent implements OnInit {
     console.log("Solo session with museum ID: " + this.museumId)
     this.gameDataService.soloSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
+        sessionStorage.setItem('isSolo', "true")
         this.router.navigate(['solo'])
       }
     )

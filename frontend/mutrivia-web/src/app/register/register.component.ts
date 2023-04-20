@@ -16,6 +16,12 @@ export class RegisterComponent implements OnInit {
     private userDataService: UserDataService, ) { }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem('userId')){
+      this.userDataService.deleteUser(sessionStorage.getItem('userId')!).subscribe(
+      data => {
+        sessionStorage.removeItem('userId')
+      }
+    )}   
   }
 
   registerUser(){
@@ -28,9 +34,9 @@ export class RegisterComponent implements OnInit {
         data => {
           sessionStorage.setItem('userId', data.userId)
           console.log("User ID set: " + data.userId)
+          this.router.navigate(['menu'])
         }
       )
-      this.router.navigate(['menu'])
     }
   }
 

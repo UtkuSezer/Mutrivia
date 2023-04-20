@@ -37,6 +37,10 @@ export class GameDataService {
     return this.http.get(`${GAME_API_URL}/leave/${userId}`);
   }
 
+  switchToResults(userId:string){
+    return this.http.get(`${GAME_API_URL}/results/${userId}`);
+  }
+
   endSession(userId:string){
     return this.http.get(`${GAME_API_URL}/end/${userId}`);
   }
