@@ -52,18 +52,27 @@ public class GameService {
 
     public void changeSessionQuestion(String userId){
         User host = userService.findUserById(userId);
-
+        Session session = sessionService.findSessionByHostId(userId);
         List<TextData> textDataList = textDataService.findTextDataByMuseumId(host.getMuseumId());
-        System.out.println(textDataList.toString());
-        int randomTextDataIndex = (int)(Math.random() * textDataList.size());
-        String textDataIdToUse = textDataList.get(randomTextDataIndex).getTextDataId();
-        List<Question> questionList = questionService.findQuestionByTextId(textDataIdToUse);
 
-        List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
-        for(User user: usersInSession){
-            int randomQuestionIndex = (int)(Math.random() * questionList.size());
-            Question userQuestion = questionList.get(randomQuestionIndex);
-            webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
+        if(session.getTextDataIndex() >= textDataList.size()){
+            Question endQuestion = new Question();
+            endQuestion.setQuestionStatement("endsession");
+            webSocketService.sendQuestionMessage(endQuestion, host.getUserId());
+        }
+        else {
+            //int randomTextDataIndex = (int)(Math.random() * textDataList.size());
+            String textDataIdToUse = textDataList.get(session.getTextDataIndex()).getTextDataId();
+            List<Question> questionList = questionService.findQuestionByTextId(textDataIdToUse);
+
+            List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
+            for (User user : usersInSession) {
+                int randomQuestionIndex = (int) (Math.random() * questionList.size());
+                Question userQuestion = questionList.get(randomQuestionIndex);
+                webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
+            }
+            session.setTextDataIndex(session.getTextDataIndex()+1);
+            sessionService.updateSession(session);
         }
     }
 

@@ -30,7 +30,14 @@ public class TextDataService {
         return textDataRepository.save(textData);
     }
 
-    public void deleteTextData(String textDataId){
+    public void deleteTextDataById(String textDataId){
         textDataRepository.deleteById(textDataId);
+    }
+
+    public void deleteTextDataByMuseumId(String museumId){
+        List<TextData> textDataList = findTextDataByMuseumId(museumId);
+        for(TextData textData: textDataList){
+            textDataRepository.deleteById(textData.getTextDataId());
+        }
     }
 }

@@ -53,9 +53,21 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/deletetextdata/{textDataId}")
-    public ResponseEntity<Void> deleteTextData(@PathVariable String textDataId){
-        textDataService.deleteTextData(textDataId);
+    @DeleteMapping("/deleteallquestions")
+    public ResponseEntity<Void> deleteQuestion(){
+        questionService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/deletetextdatabyid/{textDataId}")
+    public ResponseEntity<Void> deleteTextDataById(@PathVariable String textDataId){
+        textDataService.deleteTextDataById(textDataId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/deletetextdatabymuseum/{museumId}")
+    public ResponseEntity<Void> deleteTextDataByMuseumId(@PathVariable String museumId){
+        textDataService.deleteTextDataByMuseumId(museumId);
         return ResponseEntity.noContent().build();
     }
 

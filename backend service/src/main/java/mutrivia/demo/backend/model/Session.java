@@ -19,5 +19,6 @@ public class Session {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String sessionId;
     private String hostId;
+    private int textDataIndex;
     private boolean isJoinable;
 }

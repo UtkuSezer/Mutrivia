@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { GameDataService } from '../service/game-data.service';
 import { UserDataService } from '../service/user-data.service';
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-gameover',
@@ -19,17 +20,22 @@ export class GameoverComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
-      data => {
-        this.users = data;
-        this.users.sort((firstUser, secondUser) => secondUser.score - firstUser.score);
-      }
-    )
-    this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
-      data => {
-        this.myUser = data
-      }
-    )
+    if(browserRefresh){
+      this.router.navigate(['menu'])
+    }
+    else{
+      this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          this.users = data;
+          this.users.sort((firstUser, secondUser) => secondUser.score - firstUser.score);
+        }
+      )
+      this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          this.myUser = data
+        }
+      )
+    }
   }
 
   onClickEndSession(){

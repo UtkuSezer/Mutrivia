@@ -19,20 +19,12 @@ class Question:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
-def generate_question(input_text, text_data_id):
+def generate_question(input_text):
     payload = {
         "input_text": input_text
     }
     output = qg.predict_mcq(payload)
-
-    random_question_index = random.randint(0, len(output['questions'])) - 1
-
-    question_statement = output['questions'][random_question_index]['question_statement']
-    options_list = output['questions'][random_question_index]['options']
-    random_option_index = random.randint(0, len(output['questions'][random_question_index]['options']))
-    options_list.insert(random_option_index, output['questions'][random_question_index]['answer'])
-    generated_question = Question(question_statement, options_list, random_option_index, text_data_id)
-    return generated_question
+    return output['questions']
 
 
 def callback(ch, method, properties, body):
@@ -45,15 +37,22 @@ def callback(ch, method, properties, body):
     text_data_id = text_data_id.replace("\"", "")
 
     print("Received: ", text, "\nText Data ID: ", text_data_id)
-    generated_question = generate_question(text, text_data_id)
 
-    sender_connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    sender_channel = sender_connection.channel()
+    generated_question_list = generate_question(text)
+    for question in generated_question_list:
+        question_statement = question['question_statement']
+        options_list = question['options']
+        random_option_index = random.randint(0, len(question['options']))
+        options_list.insert(random_option_index, question['answer'])
+        generated_question = Question(question_statement, options_list, random_option_index, text_data_id)
 
-    # sender_channel.queue_declare(queue='question')
-    data = generated_question.toJSON()
-    sender_channel.basic_publish(exchange='', routing_key='question', body=data)
-    print("PUBLISHED")
+        sender_connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        sender_channel = sender_connection.channel()
+        data = generated_question.toJSON()
+        sender_channel.basic_publish(exchange='', routing_key='question', body=data)
+        print("PUBLISHED")
+
+    print("Completed Generating questions from text data with ID: " + text_data_id)
 
 
 def main():

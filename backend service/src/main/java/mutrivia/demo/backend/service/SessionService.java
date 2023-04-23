@@ -25,6 +25,7 @@ public class SessionService {
         Session session = new Session();
         session.setHostId(userId);
         session.setJoinable(true);
+        session.setTextDataIndex(0);
         return sessionRepository.save(session);
     }
 

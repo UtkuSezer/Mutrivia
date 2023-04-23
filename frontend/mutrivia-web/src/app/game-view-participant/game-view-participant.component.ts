@@ -6,6 +6,7 @@ import { User } from '../models/user';
 import { GameDataService } from '../service/game-data.service';
 import { UserDataService } from '../service/user-data.service';
 import * as Stomp from 'stompjs';
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-game-view-participant',
@@ -36,6 +37,10 @@ export class GameViewParticipantComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    if(browserRefresh){
+      this.onClickLeaveSession();
+    }
+
     this.pauseTimer();
     this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
@@ -110,7 +115,7 @@ export class GameViewParticipantComponent implements OnInit {
     this.deleteUserTopic = this.deleteUserTopic + this.myUser.sessionId;
     this.deleteSessionTopic = this.deleteSessionTopic + this.myUser.sessionId;
     this.startSessionTopic = this.startSessionTopic + this.myUser.sessionId;
-  } 
+  }
 
   //WebSocket ------------------------------------------------------------------------------
 
@@ -154,6 +159,7 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onQuestionMessageReceived(message: any) {
+    this.pauseTimer();
     let question: Question = JSON.parse(message.body);
     this.currentQuestion = question;
     this.resetTimer();

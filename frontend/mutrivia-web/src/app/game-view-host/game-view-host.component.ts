@@ -7,6 +7,7 @@ import { GameDataService } from '../service/game-data.service';
 import { UserDataService } from '../service/user-data.service';
 //import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-game-view-host',
@@ -30,13 +31,17 @@ export class GameViewHostComponent implements OnInit {
   timeLeft: number = 30;
   interval !: any;
   pauseInterval !: any;
-  pauseTimeLeft: number = 5;
+  pauseTimeLeft: number = 10;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
     private router: Router) { }
 
   ngOnInit(): void {
+    if(browserRefresh){
+      this.onClickEndSession();
+    }
+
     this.pauseTimer();
     this.pausePauseTimer();
     this.setUsers()
@@ -183,6 +188,9 @@ export class GameViewHostComponent implements OnInit {
 
   onQuestionMessageReceived(message: any) {
     let question: Question = JSON.parse(message.body);
+    if(question.questionStatement === "endsession"){
+      this.onClickEndSession();
+    }
     this.currentQuestion = question;
     this.resetTimer();
     this.startTimer()

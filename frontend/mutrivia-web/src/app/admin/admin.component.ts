@@ -17,9 +17,7 @@ export class AdminComponent {
   sendText(){
     this.adminService.generateQuestion(this.museumId,this.artifactText).subscribe(
       data => {
-        if(data == true){
-          
-        }
+        this.artifactText = "";
       }
     )
   }
