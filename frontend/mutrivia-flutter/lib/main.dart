@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Nunito',
       ),
-      home: WelcomeScreen(),
+      home: WelcomeScreen()
     );
   }
 }
