@@ -3,11 +3,14 @@ import "package:websafe_svg/websafe_svg.dart";
 import "package:mutrivia_flutter/pages/options.dart";
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  WelcomeScreen({Key? key}) : super(key: key);
+  TextEditingController usernameController = TextEditingController();
+  bool texterror = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.deepPurple[600],
       body: SafeArea(
         child: Padding(
@@ -30,15 +33,17 @@ class WelcomeScreen extends StatelessWidget {
                   fontSize: 15
                 ),
               ),
-              Spacer(),
+              SizedBox(height: 30),
               TextField(
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.deepPurple[50],
-                      hintText: "Username",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12),
-                      ),
+                controller: usernameController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.deepPurple[50],
+                  hintText: "Username",
+                  errorText: texterror?"Enter Correct Name":null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -58,10 +63,9 @@ class WelcomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const OptionsScreen()));
-                      }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
-                      child: const Text('THANK YOU NEXT'),
+                                builder: (context) => OptionsScreen(username: usernameController.text)));
+                      },
+                      child: const Text('Submit'),
                    ),
                 ),
               ),

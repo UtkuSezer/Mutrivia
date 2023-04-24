@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 class Quiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mutrivia',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Nunito',
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        actions: [
+            TextButton(
+              onPressed: (){},
+              child: Text("GEÇ"),
+              )
+        ],
       ),
+      body: Stack(
+        children:[
+        ]
+
+      )
     );
   }
 }
