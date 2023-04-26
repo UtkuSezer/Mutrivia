@@ -6,18 +6,8 @@ class Quiz extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        actions: [
-            TextButton(
-              onPressed: (){},
-              child: Text("NEXT"),
-              )
-        ],
-      ),
-      body: Stack(
-        children:[
-        ]
 
-      )
+      ),
     );
   }
 }
