@@ -17,6 +17,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { GameoverComponent } from './gameover/gameover.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminAuthComponent } from './admin-auth/admin-auth.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AdminAuthComponent } from './admin-auth/admin-auth.component';
     GameViewSoloComponent,
     GameoverComponent,
     AdminComponent,
-    AdminAuthComponent
+    AdminAuthComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<h3 class="text-primary">Quiz Finished!</h3>
+<h4 style="color:rgb(131, 130, 130)">Leaderboard:</h4>
+
+<div class="col-4">
+    <table style="max-height:100%; overflow:auto" class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of leaderboardRecords">
+                <td>{{record.username}}</td>
+                <td>{{record.score}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button (click)="onClickEndSession()" class="btn btn-primary mt-4">Continue to Main Menu</button>

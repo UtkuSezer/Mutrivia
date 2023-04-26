@@ -23,8 +23,9 @@ public class GameService {
     private TextSender textSender;
     private QuestionReceiver questionReceiver;
     private WebSocketService webSocketService;
+    private LeaderboardService leaderboardService;
 
-    public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, QuestionService questionService, TextSender textSender, QuestionReceiver questionReceiver, WebSocketService webSocketService) {
+    public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, QuestionService questionService, TextSender textSender, QuestionReceiver questionReceiver, WebSocketService webSocketService, LeaderboardService leaderboardService) {
         this.userService = userService;
         this.sessionService = sessionService;
         this.textDataService = textDataService;
@@ -32,6 +33,7 @@ public class GameService {
         this.textSender = textSender;
         this.questionReceiver = questionReceiver;
         this.webSocketService = webSocketService;
+        this.leaderboardService = leaderboardService;
     }
 
     public void generateQuestion(String userId){
@@ -50,9 +52,9 @@ public class GameService {
         }
     }
 
-    public void changeSessionQuestion(String userId){
+    public Question changeSessionQuestion(String userId){
         User host = userService.findUserById(userId);
-        Session session = sessionService.findSessionByHostId(userId);
+        Session session = sessionService.findSessionByHostId(host.getUserId());
         List<TextData> textDataList = textDataService.findTextDataByMuseumId(host.getMuseumId());
 
         if(session.getTextDataIndex() >= textDataList.size()){
@@ -70,10 +72,13 @@ public class GameService {
                 int randomQuestionIndex = (int) (Math.random() * questionList.size());
                 Question userQuestion = questionList.get(randomQuestionIndex);
                 webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
+                System.out.println("Send Question");
+                return userQuestion;
             }
             session.setTextDataIndex(session.getTextDataIndex()+1);
             sessionService.updateSession(session);
         }
+        return null;
     }
 
     public void startSession(String userId){
@@ -115,8 +120,9 @@ public class GameService {
     }
 
     public User startSoloSession(String userId, String museumId){
+        sessionService.addSoloSession(userId);
         User soloUser = userService.findUserById(userId);
-        soloUser.setSessionId("solo" + userId);
+        soloUser.setSessionId(sessionService.findSessionByHostId(userId).getSessionId());
         soloUser.setMuseumId(museumId);
         soloUser.setState(UserStateConstants.SOLO_USER);
         userService.updateUser(soloUser);
@@ -139,6 +145,7 @@ public class GameService {
             leaveSession(user);
         }
         else if(user.getState().equals(UserStateConstants.SOLO_USER)){
+            sessionService.deleteSession(user.getSessionId());
             leaveSession(user);
         }
         else{

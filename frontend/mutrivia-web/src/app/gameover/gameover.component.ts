@@ -21,7 +21,7 @@ export class GameoverComponent implements OnInit {
 
   ngOnInit(): void {
     if(browserRefresh){
-      this.router.navigate(['menu'])
+      this.onClickEndSession();
     }
     else{
       this.userDataService.getUsersInSession(sessionStorage.getItem('userId') as string).subscribe(

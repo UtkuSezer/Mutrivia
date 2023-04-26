@@ -6,6 +6,7 @@ import { GameDataService } from '../service/game-data.service';
 import { UserDataService } from '../service/user-data.service';
 import * as Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-game-view-solo',
@@ -21,45 +22,64 @@ export class GameViewSoloComponent implements OnInit {
   webSocketEndPoint: string = 'http://localhost:8080/ws';
   questionTopic: string = "/topic/question/";
 
-  timeLeft: number = 60;
+  timeLeft: number = 30;
   interval !: any;
+  pauseInterval !: any;
+  pauseTimeLeft: number = 5;
+  isGamePaused: boolean = false
+  isGameStarted: boolean = false
   
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
     private router: Router) { }
 
   ngOnInit(): void {
+    if(browserRefresh){
+      this.onClickLeaveGame();
+    }
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.myUser = data
-        this.setTopics()
-        this.connect()
-        this.onClickGenerateQuestion()
+        this.onClickGenerateQuestion();
       }
     )
-  }
 
-  setTopics(){
-    this.questionTopic = this.questionTopic + this.myUser.sessionId;
   }
 
   onClickGenerateQuestion(){
     this.gameDataService.generateQuestion(sessionStorage.getItem('userId') as string).subscribe(
       data => {
+        if(data.questionStatement === "endsession"){
+          this.onClickLeaveGame();
+        }
         this.currentQuestion = data
+        console.log("Question Set")
+        this.resetTimer();
+        this.startTimer();
       }
     )
   }
 
   onClickOption(i:number){
-    this.pauseTimer()
+    //this.pauseTimer()
     if(this.currentQuestion.correctChoiceIndex == i){
-      console.log("CORRECT");
-      this.myUser.score = this.myUser.score + this.timeLeft*10
-      //Save the score to database at the end
+      this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
+        data=>{
+          console.log("CORRECT, POINTS: ", this.timeLeft*10 );
+          this.resetPauseTimer();
+          this.isGamePaused = true;
+          this.startPauseTimer();
+          this.pauseTimer();
+          this.myUser = data;
+        }
+      )
     }
     else{
       console.log("FALSE");
+      this.resetPauseTimer();
+      this.isGamePaused = true;
+      this.startPauseTimer();
+      this.pauseTimer();
     }
   }
 
@@ -68,59 +88,52 @@ export class GameViewSoloComponent implements OnInit {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        console.log("TIME IS UP")
+        this.resetPauseTimer();
+        this.isGamePaused = true;
+        this.startPauseTimer();
+        this.pauseTimer();
       }
     },1000)
+  }
+
+  resetTimer(){
+    this.timeLeft = 30
   }
 
   pauseTimer() {
     clearInterval(this.interval);
   }
 
-  onClickLeaveGame(){
-    this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
+  startPauseTimer() {
+    this.pauseInterval = setInterval(() => {
+      if(this.pauseTimeLeft > 0) {
+        this.pauseTimeLeft--;
+      } else {
+        this.onClickGenerateQuestion();
+        this.pausePauseTimer();
+        this.isGamePaused = false;
+      }
+    },1000)
+  }
+
+  pausePauseTimer() {
+    clearInterval(this.pauseInterval);
+  }
+
+  resetPauseTimer() {
+    this.pauseTimeLeft = 5
+  }
+
+  onClickLeaveGame(){ 
+    this.pausePauseTimer();
+    this.pauseTimer();
+    this.gameDataService.checkLeaderboard(this.myUser.userId as string).subscribe(
       data => {
         sessionStorage.removeItem("isSolo");
-        this.router.navigate(['menu']);
+        this.router.navigate(['leaderboard']);
       }
     )
   }
-
-    //WebSocket ------------------------------------------------------------------------------
-
-    connect(): void {
-      console.log('WebSocket Connection');
-      const ws = new SockJS(this.webSocketEndPoint);
-      this.stompClient = Stomp.over(ws);
-      const _this = this;
-      _this.stompClient.connect({}, function(frame:any) {
-        _this.stompClient.subscribe(_this.questionTopic, function(sdkEvent:any) {
-          _this.onQuestionMessageReceived(sdkEvent);
-        });
-      }, this.errorCallBack);
-    }
-  
-    disconnect(): void {
-      if (this.stompClient !== null) {
-        this.stompClient.disconnect();
-      }
-      console.log('Disconnected');
-    }
-  
-     // on error, schedule a reconnection attempt
-     errorCallBack(error:any) {
-      console.log('errorCallBack -> ' + error);
-      setTimeout(() => {
-          this.connect();
-      }, 5000);
-    }
-  
-    onQuestionMessageReceived(message: any) {
-      let question: Question = JSON.parse(message.body);
-      this.currentQuestion = question;
-      this.timeLeft = 60;
-      this.startTimer;
-    }
     //End of WebSocket ---------------------------------------------------------------------
 
 }

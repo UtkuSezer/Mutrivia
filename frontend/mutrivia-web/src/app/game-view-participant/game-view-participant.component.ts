@@ -82,6 +82,7 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onClickLeaveSession(){
+    this.pauseTimer();
     this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false;

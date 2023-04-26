@@ -29,6 +29,14 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
+    public Session addSoloSession(String userId){
+        Session session = new Session();
+        session.setHostId(userId);
+        session.setJoinable(false);
+        session.setTextDataIndex(0);
+        return sessionRepository.save(session);
+    }
+
     public Session updateSession(Session session){
         return sessionRepository.save(session);
     }

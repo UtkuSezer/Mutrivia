@@ -87,6 +87,8 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickEndSession(){
+    this.pausePauseTimer();
+    this.pauseTimer();
     this.gameDataService.switchToResults(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false

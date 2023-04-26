@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_URL, GAME_API_URL } from 'src/app/app.constants';
 import { User } from '../models/user';
 import { Question } from '../models/question';
+import { LeaderboardRecord } from '../models/leaderboard-record';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,14 @@ export class GameDataService {
 
   endSession(userId:string){
     return this.http.get(`${GAME_API_URL}/end/${userId}`);
+  }
+
+  checkLeaderboard(userId:string){
+    return this.http.get(`${GAME_API_URL}/checkleaderboard/${userId}`);
+  }
+
+  getLeaderboard(userId:string){
+    return this.http.get<LeaderboardRecord[]>(`${GAME_API_URL}/leaderboard/${userId}`);
   }
 
 }

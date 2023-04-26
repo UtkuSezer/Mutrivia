@@ -10,6 +10,7 @@ import { MenuComponent } from './menu/menu.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminAuthComponent } from './admin-auth/admin-auth.component';
 import { AdminComponent } from './admin/admin.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const routes: Routes = [
   {path:'', component:RegisterComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path:'participant', component:GameViewParticipantComponent, canActivate: [AuthGuard]},
   {path:'solo', component:GameViewSoloComponent, canActivate: [AuthGuard]},
   {path:'gameover', component:GameoverComponent},
+  {path:'leaderboard', component:LeaderboardComponent},
   {path:'adminauth', component:AdminAuthComponent},
   {path:'admin', component:AdminComponent, canActivate: [AuthGuard]},
   {path:'**', component:ErrorComponent}
