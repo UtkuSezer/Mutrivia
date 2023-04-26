@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:mutrivia_flutter/pages/loading.dart";
 import 'package:mutrivia_flutter/pages/quiz.dart';
-import 'package:mutrivia_flutter/pages/start_quiz.dart';
+import 'package:mutrivia_flutter/pages/startQuiz.dart';
+import 'package:mutrivia_flutter/pages/enterSessionID.dart';
+import 'package:mutrivia_flutter/pages/hostSession.dart';
 
 class OptionsScreen extends StatelessWidget {
   final String username;
@@ -44,7 +46,7 @@ class OptionsScreen extends StatelessWidget {
                          Navigator.push(
                              context,
                              MaterialPageRoute(
-                                 builder: (context) => StartQuiz()));
+                                 builder: (context) => HostSession()));
                        }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                        child: Text('HOST A SESSION'), //host a session
                      ),
@@ -66,7 +68,7 @@ class OptionsScreen extends StatelessWidget {
                     Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Loading()));
+                                builder: (context) => EnterSessionID()));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('JOIN A SESSION'),
                     ),
@@ -88,7 +90,7 @@ class OptionsScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Quiz()));
+                            builder: (context) => HostSession()));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('PLAY SOLO'),
               ),

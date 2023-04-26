@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import "package:websafe_svg/websafe_svg.dart";
 import "package:mutrivia_flutter/pages/options.dart";
 
-class WelcomeScreen extends StatelessWidget {
-  WelcomeScreen({Key? key}) : super(key: key);
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   TextEditingController usernameController = TextEditingController();
-  bool texterror = false;
+  bool _errorText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class WelcomeScreen extends StatelessWidget {
               Text("Enter your username below", style: TextStyle(
                   color: Colors.white,
                   fontSize: 15
-                ),
+              ),
               ),
               SizedBox(height: 30),
               TextField(
@@ -40,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.deepPurple[50],
                   hintText: "Username",
-                  errorText: texterror?"Enter Correct Name":null,
+                  errorText: _errorText ? "Username can't be empty" : null,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12),
                     ),
@@ -58,15 +64,23 @@ class WelcomeScreen extends StatelessWidget {
                       onPrimary: Colors.white,
                       onSurface: Colors.grey,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OptionsScreen(username: usernameController.text)));
-                      },
-                      child: const Text('Submit'),
-                   ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        usernameController.text.isEmpty ? _errorText = true : _errorText = false;
+                        
+                        if (_errorText == false) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OptionsScreen(
+                                          username: usernameController.text)));
+                        }
+                      });
+                    },
+                    child: const Text('Submit'),
+                  ),
                 ),
               ),
               Spacer(),
@@ -77,3 +91,4 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
+
