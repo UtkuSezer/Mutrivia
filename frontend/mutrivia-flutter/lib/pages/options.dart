@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:mutrivia_flutter/pages/loading.dart";
+import 'package:mutrivia_flutter/pages/quiz.dart';
+import 'package:mutrivia_flutter/pages/start_quiz.dart';
 
 class OptionsScreen extends StatelessWidget {
   final String username;
@@ -32,14 +34,17 @@ class OptionsScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                        style: ElevatedButton.styleFrom(
-                         textStyle: const TextStyle(fontSize: 20),
+                         textStyle: const TextStyle(fontSize: 25),
                          primary: Colors.deepPurple[700],
                          onPrimary: Colors.white,
                          onSurface: Colors.grey,
                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                        ),
                        onPressed: () {
-
+                         Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                                 builder: (context) => StartQuiz()));
                        }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                        child: Text('HOST A SESSION'), //host a session
                      ),
@@ -51,17 +56,17 @@ class OptionsScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 20),
-                    primary: Colors.deepPurple[00],
+                    textStyle: const TextStyle(fontSize: 25),
+                    primary: Colors.deepPurple[400],
                     onPrimary: Colors.white,
                     onSurface: Colors.grey,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   onPressed: () {
                     Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => Loading()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Loading()));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('JOIN A SESSION'),
                     ),
@@ -73,14 +78,17 @@ class OptionsScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 20),
+                    textStyle: const TextStyle(fontSize: 25),
                     primary: Colors.deepPurple[100],
                     onPrimary: Colors.white,
                     onSurface: Colors.grey,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   onPressed: () {
-
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Quiz()));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('PLAY SOLO'),
               ),
