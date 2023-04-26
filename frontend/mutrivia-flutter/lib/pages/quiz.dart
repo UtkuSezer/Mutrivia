@@ -9,7 +9,7 @@ class Quiz extends StatelessWidget {
         actions: [
             TextButton(
               onPressed: (){},
-              child: Text("GEÇ"),
+              child: Text("NEXT"),
               )
         ],
       ),
