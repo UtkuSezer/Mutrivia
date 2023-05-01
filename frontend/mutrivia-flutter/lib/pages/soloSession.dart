@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import "package:mutrivia_flutter/pages/loading.dart";
+import 'package:mutrivia_flutter/pages/startQuiz.dart';
 import 'package:http/http.dart' as http;
-class HostSession extends StatefulWidget {
-  const HostSession({Key? key}) : super(key: key);
+class SoloSession extends StatefulWidget {
+  const SoloSession({Key? key}) : super(key: key);
 
   @override
-  State<HostSession> createState() => _HostSessionState();
+  State<SoloSession> createState() => _SoloSessionState();
 }
 
-class _HostSessionState extends State<HostSession> {
+class _SoloSessionState extends State<SoloSession> {
   TextEditingController museumID = TextEditingController();
   bool _errorText = false;
 
@@ -76,11 +76,11 @@ class _HostSessionState extends State<HostSession> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        Loading()));
+                                        StartQuiz()));
                           }
                         });
                       },
-                      child: const Text('Enter'),
+                      child: const Text('Start Quiz'),
                     ),
                   ),
                 ),

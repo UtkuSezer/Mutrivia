@@ -4,6 +4,8 @@ import 'package:mutrivia_flutter/pages/quiz.dart';
 import 'package:mutrivia_flutter/pages/startQuiz.dart';
 import 'package:mutrivia_flutter/pages/enterSessionID.dart';
 import 'package:mutrivia_flutter/pages/hostSession.dart';
+import 'package:mutrivia_flutter/pages/soloSession.dart';
+import 'package:http/http.dart' as http;
 
 class OptionsScreen extends StatelessWidget {
   final String username;
@@ -90,7 +92,7 @@ class OptionsScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HostSession()));
+                            builder: (context) => SoloSession()));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('PLAY SOLO'),
               ),
