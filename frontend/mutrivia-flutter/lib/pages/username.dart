@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:websafe_svg/websafe_svg.dart";
 import "package:mutrivia_flutter/pages/options.dart";
+import "package:mutrivia_flutter/classes/user-data.service.dart";
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -68,8 +69,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () {
                       setState(() {
                         usernameController.text.isEmpty ? _errorText = true : _errorText = false;
-                        
+
                         if (_errorText == false) {
+                          addUser(usernameController.text);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
