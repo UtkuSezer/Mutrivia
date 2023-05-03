@@ -42,12 +42,12 @@ export class GameViewParticipantComponent implements OnInit {
     }
 
     this.pauseTimer();
-    this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.myUser = data;
         this.setTopics();
         this.connect();
+        this.setUsers();
       }
     )
   }
