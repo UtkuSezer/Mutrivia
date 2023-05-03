@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import "package:websafe_svg/websafe_svg.dart";
 import "package:mutrivia_flutter/pages/options.dart";
 import "package:mutrivia_flutter/classes/user-data.service.dart";
+import 'package:mutrivia_flutter/models/user.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   TextEditingController usernameController = TextEditingController();
+
   bool _errorText = false;
 
   @override
@@ -70,14 +72,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       setState(() {
                         usernameController.text.isEmpty ? _errorText = true : _errorText = false;
 
+                        var userId;
                         if (_errorText == false) {
                           addUser(usernameController.text);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      OptionsScreen(
-                                          username: usernameController.text)));
+
+                          Future<User> resultUser = addUser(usernameController.text);
+                          resultUser.then((value){
+                            userId = value.userId;
+                            print("alooo $userId");
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        OptionsScreen(
+                                            username: usernameController.text,
+                                            userId: userId
+                                          )));
+                          } //resultUser
+                          );
                         }
                       });
                     },

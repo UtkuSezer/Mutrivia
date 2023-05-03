@@ -1,11 +1,19 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../classes/constants.dart' as constants;
+import 'package:mutrivia_flutter/models/user.dart';
 
-Future<void> addUser(String username) async {
+User parseUser(String responseBody) {
+  final parsed = jsonDecode(responseBody);
+  return User.fromJson(parsed);
+}
+
+Future<User> addUser(String username) async {
   final url = Uri.parse('${constants.USER_API_URL}/add/$username');
   final response = await http.post(url);
   print('Status code: ${response.statusCode}');
-  print('Body: ${response.body}');
+  print('Body: ${json.decode(response.body).runtimeType}');
+  return parseUser(response.body);
 }
 
 Future<void> getUsersInSession(String userId) async {
