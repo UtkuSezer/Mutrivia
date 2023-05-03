@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import "package:mutrivia_flutter/pages/loading.dart";
-import 'package:mutrivia_flutter/pages/quiz.dart';
-import 'package:mutrivia_flutter/pages/startQuiz.dart';
 import 'package:mutrivia_flutter/pages/enterSessionID.dart';
 import 'package:mutrivia_flutter/pages/hostSession.dart';
 import 'package:mutrivia_flutter/pages/soloSession.dart';
@@ -9,7 +6,8 @@ import 'package:http/http.dart' as http;
 
 class OptionsScreen extends StatelessWidget {
   final String username;
-  OptionsScreen({Key? key, required this.username}) : super(key: key);
+  final String userId;
+  OptionsScreen({Key? key, required this.username, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
