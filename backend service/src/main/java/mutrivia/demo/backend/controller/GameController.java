@@ -49,6 +49,9 @@ public class GameController {
 
     @PutMapping("/join/{sessionId}/{userId}")
     public User joinSession(@PathVariable String sessionId, @PathVariable String userId) throws InterruptedException {
+        if(!userService.findUserById(userId).getSessionId().equals("initial")){
+            return null;
+        }
         User participant = gameService.joinSession(sessionId, userId);
         Thread.sleep(1000);
         webSocketService.sendNewUserMessage(participant, participant.getSessionId());
