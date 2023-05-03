@@ -19,7 +19,7 @@ export class GameViewSoloComponent implements OnInit {
   currentQuestion!: Question
 
   stompClient: any;
-  webSocketEndPoint: string = 'http://localhost:8080/ws';
+  webSocketEndPoint: string = 'http://www.mutrivia.com/api/ws';
   questionTopic: string = "/topic/question/";
 
   timeLeft: number = 30;

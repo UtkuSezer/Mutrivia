@@ -23,7 +23,7 @@ export class GameViewHostComponent implements OnInit {
   currentQuestion!: Question
 
   stompClient: any;
-  webSocketEndPoint: string = 'http://localhost:8080/ws';
+  webSocketEndPoint: string = 'http://www.mutrivia.com/api/ws';
   questionTopic: string = "/topic/question/";
   newUserTopic: string = "/topic/newuser/";
   deleteUserTopic: string = "/topic/deleteuser/";
