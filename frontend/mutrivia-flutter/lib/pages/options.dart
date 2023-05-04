@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mutrivia_flutter/pages/enterSessionID.dart';
-import 'package:mutrivia_flutter/pages/hostSession.dart';
-import 'package:mutrivia_flutter/pages/soloSession.dart';
-import 'package:http/http.dart' as http;
+import 'package:mutrivia_flutter/pages/joinSession/joinSession.dart';
+import 'package:mutrivia_flutter/pages/hostSession/hostSession.dart';
+import 'package:mutrivia_flutter/pages/soloSession/soloSession.dart';
 
 class OptionsScreen extends StatelessWidget {
   final String username;
