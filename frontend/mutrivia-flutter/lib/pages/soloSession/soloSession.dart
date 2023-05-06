@@ -1,17 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:mutrivia_flutter/pages/startQuiz.dart';
+  import 'package:flutter/material.dart';
+import 'package:mutrivia_flutter/pages/soloSession/soloQuiz.dart';
+import 'package:mutrivia_flutter/classes/game-data.service.dart';
+import 'package:mutrivia_flutter/models/user.dart';
 import 'package:http/http.dart' as http;
+
 class SoloSession extends StatefulWidget {
-  const SoloSession({Key? key}) : super(key: key);
+  const SoloSession({Key? key, required this.userId}) : super(key: key);
+  final String userId;
 
   @override
-  State<SoloSession> createState() => _SoloSessionState();
+  State<SoloSession> createState() => _SoloSessionState(userId: userId);
 }
 
 class _SoloSessionState extends State<SoloSession> {
   TextEditingController museumID = TextEditingController();
   bool _errorText = false;
-
+  final String userId;
+  _SoloSessionState({required this.userId});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +76,23 @@ class _SoloSessionState extends State<SoloSession> {
                       onPressed: () {
                         setState(() {
                           museumID.text.isEmpty ? _errorText = true : _errorText = false;
-
+                          var sessionId;
                           if (_errorText == false) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        StartQuiz()));
-                          }
+                            Future<User> resultUser = soloSession(userId, museumID.text);
+                            resultUser.then((value){
+                              sessionId = value.sessionId;
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          soloQuiz(
+                                              username: value.username,
+                                              userId: userId,
+                                              sessionId: value.sessionId
+                                          )));
+                            });
+}
                         });
                       },
                       child: const Text('Start Quiz'),

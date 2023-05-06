@@ -63,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: 20),
-                      primary: Colors.deepPurple[700],
+                      primary: Colors.orange[500],
                       onPrimary: Colors.white,
                       onSurface: Colors.grey,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -74,12 +74,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
                         var userId;
                         if (_errorText == false) {
-                          addUser(usernameController.text);
+                          //addUser(usernameController.text);
 
                           Future<User> resultUser = addUser(usernameController.text);
                           resultUser.then((value){
                             userId = value.userId;
-                            print("alooo $userId");
 
                             Navigator.push(
                                 context,
@@ -89,8 +88,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                             username: usernameController.text,
                                             userId: userId
                                           )));
-                          } //resultUser
-                          );
+                          });
                         }
                       });
                     },

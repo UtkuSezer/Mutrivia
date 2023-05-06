@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import "package:mutrivia_flutter/pages/joinSession/participantSessionWaiting.dart";
+import 'package:mutrivia_flutter/models/user.dart';
+import 'package:mutrivia_flutter/classes/game-data.service.dart';
 
 class EnterSessionID extends StatefulWidget {
-  const EnterSessionID({Key? key}) : super(key: key);
-
+  const EnterSessionID({Key? key, required this.userId}) : super(key: key);
+  final String userId;
   @override
-  State<EnterSessionID> createState() => _EnterSessionIDState();
+  State<EnterSessionID> createState() => _EnterSessionIDState(userId: userId);
 }
 
 class _EnterSessionIDState extends State<EnterSessionID> {
   TextEditingController sessionID = TextEditingController();
   bool _errorText = false;
+  final String userId;
+
+  _EnterSessionIDState({required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +75,20 @@ class _EnterSessionIDState extends State<EnterSessionID> {
                       onPressed: () {
                         setState(() {
                           sessionID.text.isEmpty ? _errorText = true : _errorText = false;
-
                           if (_errorText == false) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Placeholder()));
+                            Future<User> resultUser = joinSession(userId, sessionID.text);
+                            resultUser.then((value){
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ParticipantSessionWaiting(
+                                              username: value.username,
+                                              userId: userId,
+                                              sessionId: value.sessionId
+                                          )));
+                            });
                           }
                         });
                       },

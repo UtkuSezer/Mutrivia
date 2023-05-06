@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
-import "package:mutrivia_flutter/pages/loading.dart";
-import 'package:http/http.dart' as http;
+import 'package:mutrivia_flutter/classes/game-data.service.dart';
+import "package:mutrivia_flutter/pages/hostSession/hostSessionWaiting.dart";
+import 'package:mutrivia_flutter/models/user.dart';
+
 class HostSession extends StatefulWidget {
-  const HostSession({Key? key}) : super(key: key);
+  const HostSession({Key? key, required this.userId}) : super(key: key);
+  final String userId;
 
   @override
-  State<HostSession> createState() => _HostSessionState();
+  State<HostSession> createState() => _HostSessionState(userId: userId);
 }
 
 class _HostSessionState extends State<HostSession> {
   TextEditingController museumID = TextEditingController();
   bool _errorText = false;
+  final String userId;
+
+  _HostSessionState({required this.userId});
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -68,19 +76,31 @@ class _HostSessionState extends State<HostSession> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
                       onPressed: () {
+                        
                         setState(() {
                           museumID.text.isEmpty ? _errorText = true : _errorText = false;
-
+                          var sessionId;
                           if (_errorText == false) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Loading()));
+
+                            Future<User> resultUser = hostSession(userId, museumID.text);
+                            resultUser.then((value){
+                              sessionId = value.sessionId;
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          HostSessionWaiting(
+                                              username: value.username,
+                                              userId: userId,
+                                              sessionId: value.sessionId
+                                          )));
+                            });
+
                           }
                         });
                       },
-                      child: const Text('Enter'),
+                      child: Text('Enter'),
                     ),
                   ),
                 ),

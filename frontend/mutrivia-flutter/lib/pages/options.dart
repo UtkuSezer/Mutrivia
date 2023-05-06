@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mutrivia_flutter/pages/enterSessionID.dart';
-import 'package:mutrivia_flutter/pages/hostSession.dart';
-import 'package:mutrivia_flutter/pages/soloSession.dart';
+import 'package:mutrivia_flutter/pages/joinSession/joinSession.dart';
+import 'package:mutrivia_flutter/pages/hostSession/hostSession.dart';
+import 'package:mutrivia_flutter/pages/soloSession/soloSession.dart';
+import "package:mutrivia_flutter/classes/user-data.service.dart";
+import 'package:mutrivia_flutter/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class OptionsScreen extends StatelessWidget {
@@ -43,10 +45,14 @@ class OptionsScreen extends StatelessWidget {
                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                        ),
                        onPressed: () {
+
+
                          Navigator.push(
                              context,
                              MaterialPageRoute(
-                                 builder: (context) => HostSession()));
+                                 builder: (context) => HostSession(
+                                 userId: userId
+                                 )));
                        }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                        child: Text('HOST A SESSION'), //host a session
                      ),
@@ -68,7 +74,9 @@ class OptionsScreen extends StatelessWidget {
                     Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EnterSessionID()));
+                                builder: (context) => EnterSessionID(
+                                userId: userId
+                                )));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('JOIN A SESSION'),
                     ),
@@ -90,7 +98,9 @@ class OptionsScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SoloSession()));
+                            builder: (context) => SoloSession(
+                              userId: userId
+                            )));
                   }, //burda host olma, ya da odaya katılma veya tek oynama gibi seçenekleri seçeceği sayfaya gitmeli basınca yani on pressed
                   child: Text('PLAY SOLO'),
               ),
