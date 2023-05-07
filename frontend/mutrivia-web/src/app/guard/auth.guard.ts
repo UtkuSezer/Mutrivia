@@ -43,6 +43,14 @@ export class AuthGuard implements CanActivate {
                     return false
                 }
             }
+            if (route.url[0].path == 'leaderboard'){
+                if (this.isSolo(route, state)){
+                    return true
+                }
+                else{
+                    return false
+                }
+            }
             if (route.url[0].path == 'gameover'){
                 if (this.isHost(route, state)){
                     return true

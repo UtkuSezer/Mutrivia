@@ -5,10 +5,7 @@ import mutrivia.demo.backend.model.Question;
 import mutrivia.demo.backend.model.User;
 import mutrivia.demo.backend.rabbitmq.QuestionReceiver;
 import mutrivia.demo.backend.rabbitmq.TextSender;
-import mutrivia.demo.backend.service.GameService;
-import mutrivia.demo.backend.service.LeaderboardService;
-import mutrivia.demo.backend.service.UserService;
-import mutrivia.demo.backend.service.WebSocketService;
+import mutrivia.demo.backend.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +22,7 @@ public class GameController {
     private LeaderboardService leaderboardService;
     private TextSender textSender;
     private QuestionReceiver questionReceiver;
+    private TextDataService textDataService;
 
     public GameController(GameService gameService, UserService userService, WebSocketService webSocketService, LeaderboardService leaderboardService, TextSender textSender, QuestionReceiver questionReceiver) {
         this.gameService = gameService;
@@ -48,21 +46,27 @@ public class GameController {
     }
 
     @PutMapping("/join/{sessionId}/{userId}")
-    public User joinSession(@PathVariable String sessionId, @PathVariable String userId){
+    public User joinSession(@PathVariable String sessionId, @PathVariable String userId) throws InterruptedException {
         User participant = gameService.joinSession(sessionId, userId);
+        Thread.sleep(1000);
         webSocketService.sendNewUserMessage(participant, participant.getSessionId());
         return participant;
     }
 
     @PutMapping("/host/{userId}/{museumId}")
     public User hostSession(@PathVariable String userId, @PathVariable String museumId){
+        if(textDataService.findTextDataByMuseumId(museumId).size() == 0){
+            return null;
+        }
         return gameService.hostSession(userId, museumId);
     }
 
     @PutMapping("/solo/{userId}/{museumId}")
     public User soloSession(@PathVariable String userId, @PathVariable String museumId){
+        if(textDataService.findTextDataByMuseumId(museumId).size() == 0){
+            return null;
+        }
         return gameService.startSoloSession(userId, museumId);
-
     }
 
     @GetMapping("/leave/{userId}")

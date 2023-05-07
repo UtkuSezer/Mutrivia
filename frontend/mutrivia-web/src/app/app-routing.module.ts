@@ -19,8 +19,8 @@ const routes: Routes = [
   {path:'host', component:GameViewHostComponent, canActivate: [AuthGuard]},
   {path:'participant', component:GameViewParticipantComponent, canActivate: [AuthGuard]},
   {path:'solo', component:GameViewSoloComponent, canActivate: [AuthGuard]},
-  {path:'gameover', component:GameoverComponent},
-  {path:'leaderboard', component:LeaderboardComponent},
+  {path:'gameover', component:GameoverComponent, canActivate: [AuthGuard]},
+  {path:'leaderboard', component:LeaderboardComponent, canActivate: [AuthGuard]},
   {path:'adminauth', component:AdminAuthComponent},
   {path:'admin', component:AdminComponent, canActivate: [AuthGuard]},
   {path:'**', component:ErrorComponent}
