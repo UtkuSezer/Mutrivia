@@ -15,14 +15,14 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 const routes: Routes = [
   {path:'', component:RegisterComponent},
   {path:'register', component:RegisterComponent},
-  {path:'menu', component:MenuComponent, canActivate: [AuthGuard]},
-  {path:'host', component:GameViewHostComponent, canActivate: [AuthGuard]},
-  {path:'participant', component:GameViewParticipantComponent, canActivate: [AuthGuard]},
-  {path:'solo', component:GameViewSoloComponent, canActivate: [AuthGuard]},
+  {path:'menu', component:MenuComponent},
+  {path:'host', component:GameViewHostComponent},
+  {path:'participant', component:GameViewParticipantComponent},
+  {path:'solo', component:GameViewSoloComponent},
   {path:'gameover', component:GameoverComponent},
   {path:'leaderboard', component:LeaderboardComponent},
   {path:'adminauth', component:AdminAuthComponent},
-  {path:'admin', component:AdminComponent, canActivate: [AuthGuard]},
+  {path:'admin', component:AdminComponent},
   {path:'**', component:ErrorComponent}
 ];
 
