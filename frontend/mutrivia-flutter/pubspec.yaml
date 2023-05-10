@@ -43,6 +43,7 @@ dependencies:
 
   web_socket_channel: ^2.4.0
 
+  stomp_dart_client: ^0.4.4
 
   # state management, intelligent dependency injection, and route management
   get: ^4.6.5
