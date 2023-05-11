@@ -35,7 +35,6 @@ class _HostSessionWaitingState extends State<HostSessionWaiting> {
 
   _HostSessionWaitingState({required this.userId, required this.username, required this.sessionId});
 
-
   @override
   void initState() {
     super.initState();
@@ -43,13 +42,22 @@ class _HostSessionWaitingState extends State<HostSessionWaiting> {
     /*_channel = WebSocketChannel.connect(
       Uri.parse("${constants.WEB_SOCKET_URL}"), //"${constants.WEB_SOCKET_URL}/newuser/$sessionId"
     );*/
-    run();
+
+    WebSocket ws;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      run().then((value) {
+        setState(() {
+          ws = value;
+          print("DENIYORUZ $ws");
+        });
+      });
+    });
   }
 
-  void run() async {
+  Future<WebSocket> run() async {
     Random r = new Random();
     String key = base64.encode(List<int>.generate(8, (_) => r.nextInt(255)));
-    try {
+
       HttpClient client = HttpClient();
       HttpClientRequest request = await client.getUrl(
           Uri.parse('http://www.mutrivia.com/api/ws'));
@@ -69,9 +77,7 @@ class _HostSessionWaitingState extends State<HostSessionWaiting> {
           print(key);
         }
       });
-    }catch (e) {
-      print(e);
-    }
+      return ws;
   }
 
   var _channel;
@@ -79,6 +85,16 @@ class _HostSessionWaitingState extends State<HostSessionWaiting> {
 
   @override
   Widget build(BuildContext context) {
+    var ws;
+
+    ws.listen((event) {
+      print(event);
+      Map<String, dynamic> res = event;
+      print(res.keys.length);
+      for(String key in res.keys){
+        print(key);
+      }
+    });
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
