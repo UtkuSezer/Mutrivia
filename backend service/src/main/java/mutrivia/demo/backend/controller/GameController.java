@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/game")
 public class GameController {
@@ -34,7 +34,7 @@ public class GameController {
     }
 
     @GetMapping("/question/{userId}")
-    public Question nextQuestion(@PathVariable String userId){
+    public Question nextQuestion(@PathVariable String userId) {
         return gameService.changeSessionQuestion(userId);
     }
 

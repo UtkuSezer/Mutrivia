@@ -12,7 +12,7 @@ export class AdminService {
   ) {}
   
   authenticate(id:string, password:string){
-    return this.http.get<boolean>(`${ADMIN_API_URL}/authenticate/${id}/${password}`);
+    return this.http.get(`${ADMIN_API_URL}/authenticate`);
   }
 
   generateQuestion(museumId:string, artifactText:string){

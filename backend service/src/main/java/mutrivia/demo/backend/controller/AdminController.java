@@ -1,5 +1,9 @@
 package mutrivia.demo.backend.controller;
 
+import mutrivia.demo.backend.jwt.JwtRequestModel;
+import mutrivia.demo.backend.jwt.JwtResponseModel;
+import mutrivia.demo.backend.jwt.JwtUserDetailsService;
+import mutrivia.demo.backend.jwt.TokenManager;
 import mutrivia.demo.backend.model.TextData;
 import mutrivia.demo.backend.rabbitmq.TextSender;
 import mutrivia.demo.backend.service.QuestionService;
@@ -7,9 +11,14 @@ import mutrivia.demo.backend.service.TextDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -20,10 +29,19 @@ public class AdminController {
     private TextDataService textDataService;
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private TokenManager tokenManager;
+
+    /*
     @Value("${admin.id}")
     String adminId;
     @Value("${admin.password}")
     String adminPassword;
+    */
 
     public AdminController(TextSender textSender, TextDataService textDataService, QuestionService questionService) {
         this.textSender = textSender;
@@ -31,9 +49,24 @@ public class AdminController {
         this.questionService = questionService;
     }
 
-    @GetMapping("/authenticate/{id}/{password}")
-    public boolean authenticate(@PathVariable String id, @PathVariable String password){
-        return id.equals(adminId) && password.equals(adminPassword);
+    @GetMapping("/authenticate")
+    public ResponseEntity authenticate(@RequestBody JwtRequestModel request) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new
+                            UsernamePasswordAuthenticationToken(request.getUsername(),
+                            request.getPassword())
+            );
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        final String jwtToken = tokenManager.generateJwtToken(userDetails);
+        return ResponseEntity.ok(new JwtResponseModel(jwtToken));
+
+        //return id.equals(adminId) && password.equals(adminPassword);
     }
 
     @GetMapping("/generate/{museumId}/{artifactText}")
