@@ -73,7 +73,9 @@ public class GameService {
                 Question userQuestion = questionList.get(randomQuestionIndex);
                 webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
                 System.out.println("Send Question");
-                return userQuestion;
+                if (usersInSession.size() == 1) {
+                    return userQuestion;
+                }
             }
             session.setTextDataIndex(session.getTextDataIndex()+1);
             sessionService.updateSession(session);
