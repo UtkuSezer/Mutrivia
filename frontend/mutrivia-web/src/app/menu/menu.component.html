@@ -8,7 +8,11 @@
             <input type="text" class="form-control" placeholder="Enter Session ID" name="sessionId" [(ngModel)]="sessionId" required>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Join</button>
+            <button type="submit" class="btn btn-primary" *ngIf="!loader">Join</button>
+            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
         </div>
     </form>
 </div>
@@ -19,7 +23,11 @@
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Start</button>
+            <button type="submit" class="btn btn-primary" *ngIf="!loader">Start</button>
+            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
         </div>
     </form>
 </div>
@@ -30,7 +38,11 @@
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Start</button>
+            <button type="submit" class="btn btn-primary" *ngIf="!loader">Start</button>
+            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
         </div>
     </form>
 </div>

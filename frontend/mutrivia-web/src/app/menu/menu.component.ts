@@ -14,6 +14,7 @@ export class MenuComponent implements OnInit {
   soloSessionClicked: boolean = false
   sessionId: string = ''
   museumId: string = ''
+  loader = false;
 
   constructor(private router: Router,
     private gameDataService: GameDataService) { }
@@ -24,19 +25,23 @@ export class MenuComponent implements OnInit {
   enterMuseumIdHost(){
     console.log("Host session as: " + sessionStorage.getItem('userId') as string)
     console.log("Host session with museum ID: " + this.museumId)
+    this.loader = true;
     this.gameDataService.hostSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
         console.log("Session ID: " + data.sessionId);
         sessionStorage.setItem('isHost', "true")
+        this.loader = false;
         this.router.navigate(['host'])
       }
     )
   }
   enterSessionId(){
     console.log("Join session with ID: " + this.sessionId)
+    this.loader = true;
     this.gameDataService.joinSession(this.sessionId, sessionStorage.getItem('userId') as string).subscribe(
       data => {
         sessionStorage.setItem('isParticipant', "true")
+        this.loader = false;
         this.router.navigate(['participant'])
       }
     )
@@ -44,9 +49,11 @@ export class MenuComponent implements OnInit {
   }
   enterMuseumIdSolo(){
     console.log("Solo session with museum ID: " + this.museumId)
+    this.loader = true;
     this.gameDataService.soloSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
         sessionStorage.setItem('isSolo', "true")
+        this.loader = false;
         this.router.navigate(['solo'])
       }
     )

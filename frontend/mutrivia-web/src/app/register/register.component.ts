@@ -11,6 +11,7 @@ import { User } from '../models/user';
 export class RegisterComponent implements OnInit {
 
   username: string = '';
+  loader = false;
 
   constructor(private router: Router,
     private userDataService: UserDataService, ) { }
@@ -32,11 +33,12 @@ export class RegisterComponent implements OnInit {
     }
     else{
       console.log("User registered: " + this.username)
-
+      this.loader = true;
       this.userDataService.addUser(this.username).subscribe(
         data => {
           sessionStorage.setItem('userId', data.userId)
           console.log("User ID set: " + data.userId)
+          this.loader = false;
           this.router.navigate(['menu'])
         }
       )
