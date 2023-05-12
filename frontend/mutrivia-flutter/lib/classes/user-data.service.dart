@@ -18,7 +18,7 @@ Future<User> addUser(String username) async {
 
 Future<void> getUsersInSession(String userId) async {
   final url = Uri.parse('${constants.USER_API_URL}/session/$userId');
-  final response = await http.put(url);
+  final response = await http.get(url); ///neden put?
   print('Status code: ${response.statusCode}');
   print('Body: ${response.body}');
 }
