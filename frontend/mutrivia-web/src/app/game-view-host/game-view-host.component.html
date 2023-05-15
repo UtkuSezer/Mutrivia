@@ -33,8 +33,19 @@
 </div>
 
 <div *ngIf="!isGameStarted">
+    
+    <div class="container">
+        <div class="label">
+            Session ID: 
+        </div>
+        <div class="copy-text">
+            <input type="text" class="text w-100" value="{{myUser.sessionId}}">
+            <button class="float-right" (click)="callCopyText()">
+                <i class="bi bi-clipboard"></i>
+            </button>
+        </div>
+    </div>
 
-    <h4>Session ID: {{myUser.sessionId}}</h4>
     <table style="max-height:100%; overflow:auto" class="table mt-4">
         <thead>
             <tr>
@@ -49,6 +60,6 @@
             </tr>
         </tbody>
     </table>
-
-    <button (click)="onClickStartQuiz()" class="btn btn-success">Start Quiz</button>
+    <button (click)="onClickStartQuiz()" class="btn btn-success" style="background-color:rgb(81, 45, 168); border-radius:1vw;">Start Quiz</button>
+    
 </div>

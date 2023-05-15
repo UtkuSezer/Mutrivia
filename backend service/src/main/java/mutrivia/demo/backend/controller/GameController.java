@@ -24,13 +24,14 @@ public class GameController {
     private QuestionReceiver questionReceiver;
     private TextDataService textDataService;
 
-    public GameController(GameService gameService, UserService userService, WebSocketService webSocketService, LeaderboardService leaderboardService, TextSender textSender, QuestionReceiver questionReceiver) {
+    public GameController(GameService gameService, UserService userService, WebSocketService webSocketService, LeaderboardService leaderboardService, TextSender textSender, QuestionReceiver questionReceiver, TextDataService textDataService) {
         this.gameService = gameService;
         this.userService = userService;
         this.webSocketService = webSocketService;
         this.leaderboardService = leaderboardService;
         this.textSender = textSender;
         this.questionReceiver = questionReceiver;
+        this.textDataService = textDataService;
     }
 
     @GetMapping("/question/{userId}")

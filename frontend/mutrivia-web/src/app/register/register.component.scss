@@ -1,0 +1,8 @@
+@import "../../../node_modules/bootstrap/scss/functions"; 
+@import "../../../node_modules/bootstrap/scss/variables";
+
+$custom-colors: (
+    "mutrivia-purple": "#5C3D9E",
+);
+
+@import "../../../node_modules/bootstrap";

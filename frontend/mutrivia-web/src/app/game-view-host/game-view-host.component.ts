@@ -9,6 +9,8 @@ import { UserDataService } from '../service/user-data.service';
 import * as Stomp from 'stompjs';
 import { browserRefresh } from '../app.component';
 
+declare const copytext: any;
+
 @Component({
   selector: 'app-game-view-host',
   templateUrl: './game-view-host.component.html',
@@ -36,6 +38,10 @@ export class GameViewHostComponent implements OnInit {
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
     private router: Router) { }
+
+  callCopyText(){
+    copytext();
+  }
 
   ngOnInit(): void {
     if(browserRefresh){

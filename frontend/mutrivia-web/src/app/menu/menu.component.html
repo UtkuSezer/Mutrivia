@@ -1,15 +1,16 @@
-<button (click)="onClickHostSession()" type="button" style="height: 15vh;" class="btn btn-primary btn-lg col-12 mt-3">Host a new Session</button>
-<button (click)="onClickJoinSession()" type="button" style="height: 15vh; color: white; background-color: rgb(255, 111, 0)" class="btn btn-lg col-12 mt-3">Join a Session</button>
-<button (click)="onClickSoloSession()" type="button" style="height: 15vh; color: white; background-color: rgb(25, 174, 57)" class="btn btn-lg col-12 mt-3">Play Solo</button>
+<link rel="stylesheet" href="menu.component.css">
+
+<button (click)="onClickHostSession()" type="button" style="height: 15vh;" class="btn btn-host btn-lg col-12 mt-3">Host a new Session</button>
+<button (click)="onClickJoinSession()" type="button" style="height: 15vh;" class="btn btn-join btn-lg col-12 mt-3">Join a Session</button>
+<button (click)="onClickSoloSession()" type="button" style="height: 15vh;" class="btn btn-solo btn-lg col-12 mt-3">Play Solo</button>
 
 <div *ngIf="joinSessionClicked">
     <form (ngSubmit)="enterSessionId()">
-        <div class="mt-4">
+        <div class="d-grid gap-2 col-4 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Session ID" name="sessionId" [(ngModel)]="sessionId" required>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary" *ngIf="!loader">Join</button>
-            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+
+            <button type="submit" class="btn btn-submit" *ngIf="!loader">Join</button>
+            <button class="btn btn-submit" type="button" disabled *ngIf="loader">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Loading...
             </button>
@@ -19,27 +20,24 @@
 
 <div *ngIf="hostSessionClicked">
     <form (ngSubmit)="enterMuseumIdHost()">
-        <div class="mt-4">
+        <div class="d-grid gap-2 col-4 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary" *ngIf="!loader">Start</button>
-            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+
+            <button type="submit" class="btn btn-submit" *ngIf="!loader">Start</button>
+            <button class="btn btn-submit" type="button" disabled *ngIf="loader">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Loading...
             </button>
         </div>
     </form>
 </div>
-
 <div *ngIf="soloSessionClicked">
     <form (ngSubmit)="enterMuseumIdSolo()">
-        <div class="mt-4">
+        <div class="d-grid gap-2 col-4 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary" *ngIf="!loader">Start</button>
-            <button class="btn btn-primary" type="button" disabled *ngIf="loader">
+
+            <button type="submit" class="btn btn-submit" *ngIf="!loader">Start</button>
+            <button class="btn btn-submit" type="button" disabled *ngIf="loader">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Loading...
             </button>

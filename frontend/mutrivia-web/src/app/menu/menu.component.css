@@ -1,0 +1,35 @@
+.btn-host {
+    color: #fff;
+    background-color: #ffb74d;
+}
+.btn-host:hover, .btn-host:focus, .btn-host:active, .btn-host.active, .open>.dropdown-toggle.btn-host {
+    color: #fff;
+    background-color: #ffcc80;
+}
+
+.btn-join {
+    color: #fff;
+    background-color: #fb8c00; 
+}
+.btn-join:hover, .btn-join:focus, .btn-join:active, .btn-join.active, .open>.dropdown-toggle.btn-join {
+    color: #fff;
+    background-color: #ff9800;
+}
+
+.btn-solo {
+    color: #fff;
+    background-color: #e65100; 
+}
+.btn-solo:hover, .btn-solo:focus, .btn-solo:active, .btn-solo.active, .open>.dropdown-toggle.btn-solo {
+    color: #fff;
+    background-color: #ef6c00;
+}
+
+.btn-submit {
+    color: #fff;
+    background-color: #FF9E02;
+}
+.btn-submit:hover, .btn-submit:focus, .btn-submit:active, .btn-submit.active, .open>.dropdown-toggle.btn-submit {
+    color: #fff;
+    background-color: #ffac27;
+}
