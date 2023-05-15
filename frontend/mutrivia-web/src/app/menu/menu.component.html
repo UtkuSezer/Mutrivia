@@ -6,7 +6,7 @@
 
 <div *ngIf="joinSessionClicked">
     <form (ngSubmit)="enterSessionId()">
-        <div class="d-grid gap-2 col-4 mx-auto mt-4">
+        <div class="d-grid gap-2 col-8 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Session ID" name="sessionId" [(ngModel)]="sessionId" required>
 
             <button type="submit" class="btn btn-submit" *ngIf="!loader">Join</button>
@@ -20,7 +20,7 @@
 
 <div *ngIf="hostSessionClicked">
     <form (ngSubmit)="enterMuseumIdHost()">
-        <div class="d-grid gap-2 col-4 mx-auto mt-4">
+        <div class="d-grid gap-2 col-8 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
 
             <button type="submit" class="btn btn-submit" *ngIf="!loader">Start</button>
@@ -33,7 +33,7 @@
 </div>
 <div *ngIf="soloSessionClicked">
     <form (ngSubmit)="enterMuseumIdSolo()">
-        <div class="d-grid gap-2 col-4 mx-auto mt-4">
+        <div class="d-grid gap-2 col-8 mx-auto mt-4">
             <input type="text" class="form-control" placeholder="Enter Museum ID" name="museumId" [(ngModel)]="museumId" required>
 
             <button type="submit" class="btn btn-submit" *ngIf="!loader">Start</button>
