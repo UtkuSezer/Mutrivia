@@ -1,20 +1,24 @@
 
 <div *ngIf="isGameStarted && !isGamePaused">
-    <h5>Timer: {{timeLeft}}</h5>
-    <div class="row">
-    <div class="mt-4">
-        <h4>{{currentQuestion.questionStatement}}</h4>
-        <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
-            <button (click)="onClickOption(i)" type="button" class="btn btn-outline-secondary mt-3">{{choice}}</button>
-        </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
     </div>
+    <div class="row" style="background-color: transparent;">
+        
+        <div class="mt-4">
+            <h4>{{currentQuestion.questionStatement}}</h4>
+            <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
+                <button [disabled]="clicked" (click)="onClickOption(i)" id="{{i}}" type="button" class="btn btn-outline-secondary mt-3 btn-block">{{choice}}</button>
+            </div>
+        </div>
     
     </div>
-    <button (click)="onClickGenerateQuestion()" class="btn btn-primary mt-4">Next Question</button>
+    <!--button (click)="onClickGenerateQuestion()" class="btn btn-primary mt-4">Next Question</button-->
     <button (click)="onClickEndSession()" class="btn btn-danger mt-4">End Quiz</button>
 </div>
 
 <div *ngIf="isGamePaused" class="">
+    <h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2>
     <h5>Current Scores:</h5>
     <table style="max-height:100%; overflow:auto" class="table">
         <thead>
@@ -46,20 +50,33 @@
         </div>
     </div>
 
-    <table style="max-height:100%; overflow:auto" class="table mt-4">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Username</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td>{{user.userId}}</td>
-                <td>{{user.username}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <button (click)="onClickStartQuiz()" class="btn btn-success" style="background-color:rgb(81, 45, 168); border-radius:1vw;">Start Quiz</button>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table">
+                <div class="row header">
+                    <div class="cell">
+                        User ID
+                    </div>
+                    <div class="cell">
+                        Username
+                    </div>
+                </div>
+                <div class="row" *ngFor="let user of users">
+                    <div class="cell" data-title="User ID">
+                        {{user.userId}}
+                    </div>
+                    <div class="cell" data-title="Username">
+                        {{user.username}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <button (click)="onClickStartQuiz()" class="btn button-start text-white" *ngIf="!loaderStartQuiz">Start Quiz</button>
+    <button class="btn button-start text-white" type="button" disabled *ngIf="loaderStartQuiz">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
+
 </div>

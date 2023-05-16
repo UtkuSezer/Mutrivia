@@ -13,6 +13,7 @@
 </div>
 
 <div *ngIf="isGamePaused">
+    <h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2>
     <h5>Current Scores:</h5>
     <table style="max-height:100%; overflow:auto" class="table">
         <thead>
@@ -31,21 +32,45 @@
 </div>
 
 <div *ngIf="!isGameStarted">
-    <h4>Session ID: {{myUser.sessionId}}</h4>
+
+    <div class="container">
+        <div class="label">
+            Session ID: 
+        </div>
+        <div class="copy-text">
+            <input type="text" class="text w-100" value="{{myUser.sessionId}}">
+            <button class="float-right" (click)="callCopyText()">
+                <i class="bi bi-clipboard"></i>
+            </button>
+        </div>
+    </div>
     <h5 style="color: rgb(0, 139, 204);" class="mt-4">Waiting for host to start the game.</h5>
-    <table style="max-height:100%; overflow:auto" class="table mt-3">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Username</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td>{{user.userId}}</td>
-                <td>{{user.username}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <button (click)="onClickLeaveSession()" class="btn btn-danger">Leave Session</button>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table">
+                <div class="row header">
+                    <div class="cell">
+                        User ID
+                    </div>
+                    <div class="cell">
+                        Username
+                    </div>
+                </div>
+                <div class="row" *ngFor="let user of users">
+                    <div class="cell" data-title="User ID">
+                        {{user.userId}}
+                    </div>
+                    <div class="cell" data-title="Username">
+                        {{user.username}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button (click)="onClickLeaveSession()" class="btn button-start text-white" *ngIf="!loaderEndQuiz">Leave Session</button>
+    <button class="btn button-start text-white" type="button" disabled *ngIf="loaderEndQuiz">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
 </div>

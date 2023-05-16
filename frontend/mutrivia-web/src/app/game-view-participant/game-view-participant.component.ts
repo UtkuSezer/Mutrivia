@@ -8,6 +8,8 @@ import { UserDataService } from '../service/user-data.service';
 import * as Stomp from 'stompjs';
 import { browserRefresh } from '../app.component';
 
+declare const copytext: any;
+
 @Component({
   selector: 'app-game-view-participant',
   templateUrl: './game-view-participant.component.html',
@@ -20,6 +22,7 @@ export class GameViewParticipantComponent implements OnInit {
   isGamePaused: boolean = false
   myUser!: User
   currentQuestion!: Question
+  isAnswerCorrect: boolean = false
 
   stompClient: any;
   webSocketEndPoint: string = 'http://localhost:8080/ws';
@@ -31,10 +34,15 @@ export class GameViewParticipantComponent implements OnInit {
 
   timeLeft: number = 30;
   interval !: any;
+  loaderEndQuiz = false;
 
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
     private router: Router) { }
+
+  callCopyText(){
+    copytext();
+  }
 
   ngOnInit(): void {
     if(browserRefresh){
@@ -82,11 +90,13 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onClickLeaveSession(){
+    this.loaderEndQuiz = true;
     this.pauseTimer();
     this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false;
         sessionStorage.removeItem("isParticipant");
+        this.loaderEndQuiz = false;
         this.router.navigate(['menu'])
       }
     )
@@ -102,11 +112,13 @@ export class GameViewParticipantComponent implements OnInit {
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
           console.log("CORRECT, POINTS: ", this.timeLeft*10 );
+          this.isAnswerCorrect = true;
         }
       )
     }
     else{
       console.log("FALSE");
+      this.isAnswerCorrect = false;
     }
   }
 
@@ -163,6 +175,7 @@ export class GameViewParticipantComponent implements OnInit {
     this.pauseTimer();
     let question: Question = JSON.parse(message.body);
     this.currentQuestion = question;
+    this.isAnswerCorrect = false;
     this.resetTimer();
     this.isGamePaused = false
     this.startTimer()

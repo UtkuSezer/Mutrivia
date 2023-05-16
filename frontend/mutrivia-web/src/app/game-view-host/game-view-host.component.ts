@@ -5,7 +5,6 @@ import { Question } from '../models/question';
 import { User } from '../models/user';
 import { GameDataService } from '../service/game-data.service';
 import { UserDataService } from '../service/user-data.service';
-//import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import { browserRefresh } from '../app.component';
 
@@ -23,6 +22,7 @@ export class GameViewHostComponent implements OnInit {
   isGamePaused: boolean = false
   myUser!: User
   currentQuestion!: Question
+  isAnswerCorrect: boolean = false
 
   stompClient: any;
   webSocketEndPoint: string = 'http://localhost:8080/ws';
@@ -34,6 +34,9 @@ export class GameViewHostComponent implements OnInit {
   interval !: any;
   pauseInterval !: any;
   pauseTimeLeft: number = 10;
+  loaderStartQuiz = false;
+  timerRatioString: string = "100%";
+  clicked = false;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -84,9 +87,11 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickStartQuiz(){
+    this.loaderStartQuiz = true;
     this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.onClickGenerateQuestion();
+        this.loaderStartQuiz = false;
         this.isGameStarted = true;
       }
     )
@@ -105,15 +110,21 @@ export class GameViewHostComponent implements OnInit {
 
   onClickOption(i:number){
     //this.pauseTimer()
+    // Below line of code selects clicked button from its id and changes its style
+    document.getElementById(i.toString())!.style.backgroundColor = "#ffb74d";
+    document.getElementById(i.toString())!.style.color = "white";
+    this.clicked = true;
     if(this.currentQuestion.correctChoiceIndex == i){
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
           console.log("CORRECT, POINTS: ", this.timeLeft*10 );
+          this.isAnswerCorrect = true;
         }
       )
     }
     else{
       console.log("FALSE");
+      this.isAnswerCorrect = false
     }
   }
 
@@ -121,6 +132,7 @@ export class GameViewHostComponent implements OnInit {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
+        this.timerRatioString = ((this.timeLeft / 30) * 100).toString() + "%";
       } else {
         this.resetPauseTimer();
         this.setUsers();
@@ -195,11 +207,13 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onQuestionMessageReceived(message: any) {
+    this.clicked = false;
     let question: Question = JSON.parse(message.body);
     if(question.questionStatement === "endsession"){
       this.onClickEndSession();
     }
     this.currentQuestion = question;
+    this.isAnswerCorrect = false;
     this.resetTimer();
     this.startTimer()
   }

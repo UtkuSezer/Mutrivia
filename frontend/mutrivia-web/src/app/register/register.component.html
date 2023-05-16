@@ -14,7 +14,7 @@
     <h4 style="color:rgb(131, 130, 130)">Pick a nickname to start playing.</h4>
     <form (ngSubmit)="registerUser()">
         <div class="align-items-center justify-content-center d-grid gap-2 col-2 mx-auto mt-4">
-            <input type="text" class="form-control-lg" placeholder="Enter a Nickname" name="username" [(ngModel)]="username" required>
+            <input type="text" class="form-control" placeholder="Enter a Nickname" name="username" [(ngModel)]="username" required>
 
             <button type="submit" class="btn btn-login" *ngIf="!loader">Login</button>
             <button class="btn-login btn" type="button" disabled *ngIf="loader">

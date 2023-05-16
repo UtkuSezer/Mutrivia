@@ -8,7 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { RegisterComponent } from './register/register.component';
 import { MenuComponent } from './menu/menu.component';
 import { ErrorComponent } from './error/error.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { GameViewHostComponent } from './game-view-host/game-view-host.component';
 import { GameViewParticipantComponent } from './game-view-participant/game-view-participant.component';
@@ -39,6 +39,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [
