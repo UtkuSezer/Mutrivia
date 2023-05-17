@@ -10,7 +10,9 @@ import mutrivia.demo.backend.rabbitmq.QuestionReceiver;
 import mutrivia.demo.backend.rabbitmq.TextSender;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Log4j
@@ -25,6 +27,8 @@ public class GameService {
     private WebSocketService webSocketService;
     private LeaderboardService leaderboardService;
 
+    private Map<String, Integer> sessionIdPausedUserCountMap;
+
     public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, QuestionService questionService, TextSender textSender, QuestionReceiver questionReceiver, WebSocketService webSocketService, LeaderboardService leaderboardService) {
         this.userService = userService;
         this.sessionService = sessionService;
@@ -34,6 +38,7 @@ public class GameService {
         this.questionReceiver = questionReceiver;
         this.webSocketService = webSocketService;
         this.leaderboardService = leaderboardService;
+        this.sessionIdPausedUserCountMap = new HashMap<>();
     }
 
     public void generateQuestion(String userId){
@@ -56,26 +61,31 @@ public class GameService {
         User host = userService.findUserById(userId);
         Session session = sessionService.findSessionByHostId(host.getUserId());
         List<TextData> textDataList = textDataService.findTextDataByMuseumId(host.getMuseumId());
+        List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
 
         if(session.getTextDataIndex() >= textDataList.size()){
             Question endQuestion = new Question();
             endQuestion.setQuestionStatement("endsession");
             webSocketService.sendQuestionMessage(endQuestion, host.getUserId());
+            if(usersInSession.size() == 1){
+                return endQuestion;
+            }
         }
         else {
             //int randomTextDataIndex = (int)(Math.random() * textDataList.size());
             String textDataIdToUse = textDataList.get(session.getTextDataIndex()).getTextDataId();
             List<Question> questionList = questionService.findQuestionByTextId(textDataIdToUse);
-
-            List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
+            if(usersInSession.size() == 1){
+                int randomQuestionIndex = (int) (Math.random() * questionList.size());
+                Question userQuestion = questionList.get(randomQuestionIndex);
+                session.setTextDataIndex(session.getTextDataIndex()+1);
+                sessionService.updateSession(session);
+                return userQuestion;
+            }
             for (User user : usersInSession) {
                 int randomQuestionIndex = (int) (Math.random() * questionList.size());
                 Question userQuestion = questionList.get(randomQuestionIndex);
                 webSocketService.sendQuestionMessage(userQuestion, user.getUserId());
-                System.out.println("Send Question");
-                if (usersInSession.size() == 1) {
-                    return userQuestion;
-                }
             }
             session.setTextDataIndex(session.getTextDataIndex()+1);
             sessionService.updateSession(session);
@@ -88,6 +98,8 @@ public class GameService {
         Session session = sessionService.findSessionByHostId(userId);
         session.setJoinable(false);
         sessionService.updateSession(session);
+        List<User> usersInSession = userService.findUsersInSession(session.getSessionId());
+        sessionIdPausedUserCountMap.put(session.getSessionId(), usersInSession.size());
     }
 
     public User joinSession(String sessionId, String userId){
@@ -156,9 +168,27 @@ public class GameService {
     }
 
     public void leaveSession(User user){
+        int currentUserCount = sessionIdPausedUserCountMap.get(user.getSessionId());
+        sessionIdPausedUserCountMap.put(user.getSessionId(), currentUserCount-1);
         user.setState(UserStateConstants.INITIAL_USER);
         user.setSessionId("initial");
         user.setScore(0);
         userService.updateUser(user);
+    }
+
+    public void updatePauseMap(String sessionId){
+        int currentUserCount = sessionIdPausedUserCountMap.get(sessionId);
+        sessionIdPausedUserCountMap.put(sessionId, currentUserCount-1);
+    }
+
+    public boolean checkPauseMap(String sessionId){
+        if(sessionIdPausedUserCountMap.get(sessionId)==1){
+            List<User> usersInSession = userService.findUsersInSession(sessionId);
+            sessionIdPausedUserCountMap.put(sessionId, usersInSession.size());
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

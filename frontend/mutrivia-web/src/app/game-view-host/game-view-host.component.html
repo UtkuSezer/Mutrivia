@@ -18,7 +18,10 @@
 </div>
 
 <div *ngIf="isGamePaused" class="">
-    <h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2>
+    <!---h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2--->
+    <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
+        Your Answer is Correct!
+    </div>
     <h5>Current Scores:</h5>
     <table style="max-height:100%; overflow:auto" class="table">
         <thead>

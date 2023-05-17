@@ -54,4 +54,11 @@ export class GameDataService {
     return this.http.get<LeaderboardRecord[]>(`${GAME_API_URL}/leaderboard/${userId}`);
   }
 
+  notifyPause(sessionId:string){
+    return this.http.get(`${GAME_API_URL}/notifypause/${sessionId}`);
+  }
+
+  checkPause(sessionId:string){
+    return this.http.get<boolean>(`${GAME_API_URL}/checkpause/${sessionId}`);
+  }
 }

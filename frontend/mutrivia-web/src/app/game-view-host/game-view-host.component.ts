@@ -53,6 +53,8 @@ export class GameViewHostComponent implements OnInit {
 
     this.pauseTimer();
     this.pausePauseTimer();
+    this.resetTimer();
+    this.resetPauseTimer();
     this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
@@ -156,9 +158,18 @@ export class GameViewHostComponent implements OnInit {
       if(this.pauseTimeLeft > 0) {
         this.pauseTimeLeft--;
       } else {
-        this.isGamePaused = false;
-        this.onClickGenerateQuestion();
-        this.pausePauseTimer();
+        this.gameDataService.checkPause(this.myUser.sessionId as string).subscribe(
+          data => {
+            if(data == true){
+              this.isGamePaused = false;
+              this.onClickGenerateQuestion();
+              this.pausePauseTimer();
+            }
+            else{
+              this.pauseTimeLeft = 3;
+            }
+          }
+        )
       }
     },1000)
   }

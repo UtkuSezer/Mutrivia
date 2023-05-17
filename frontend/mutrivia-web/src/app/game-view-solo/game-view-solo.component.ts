@@ -39,6 +39,10 @@ export class GameViewSoloComponent implements OnInit {
     if(browserRefresh){
       this.onClickLeaveGame();
     }
+    this.pauseTimer();
+    this.pausePauseTimer();
+    this.resetTimer();
+    this.resetPauseTimer();
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.myUser = data
@@ -52,7 +56,8 @@ export class GameViewSoloComponent implements OnInit {
     this.clicked = false;
     this.gameDataService.generateQuestion(sessionStorage.getItem('userId') as string).subscribe(
       data => {
-        if(data.questionStatement === "endsession"){
+        if(data.questionStatement == "endsession"){
+          console.log("Finish Quiz")
           this.onClickLeaveGame();
         }
         this.currentQuestion = data

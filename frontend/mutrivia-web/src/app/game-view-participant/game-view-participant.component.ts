@@ -52,6 +52,7 @@ export class GameViewParticipantComponent implements OnInit {
     }
 
     this.pauseTimer();
+    this.resetTimer();
     this.setUsers()
     this.userDataService.getUser(sessionStorage.getItem('userId') as string).subscribe(
       data => {
@@ -79,7 +80,11 @@ export class GameViewParticipantComponent implements OnInit {
       } else {
         this.pauseTimer();
         this.setUsers();
-        this.isGamePaused = true
+        this.gameDataService.notifyPause(this.myUser.sessionId as string).subscribe(
+          data => {
+            this.isGamePaused = true
+          }
+        )
       }
     },1000)
   }

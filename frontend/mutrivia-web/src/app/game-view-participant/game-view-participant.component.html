@@ -15,7 +15,10 @@
 </div>
 
 <div *ngIf="isGamePaused">
-    <h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2>
+    <!---h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2--->
+    <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
+        Your Answer is Correct!
+    </div>
     <h5>Current Scores:</h5>
     <table style="max-height:100%; overflow:auto" class="table">
         <thead>
@@ -46,7 +49,10 @@
             </button>
         </div>
     </div>
-    <h5 style="color: rgb(0, 139, 204);" class="mt-4">Waiting for host to start the game.</h5>
+    <!--h5 style="color: rgb(0, 139, 204);" class="mt-4">Waiting for host to start the game.</h5--->
+    <div class="mt-4 alert alert-secondary" role="alert">
+        Waiting for host to start the game.
+    </div>
     <div class="container-table100">
         <div class="wrap-table100">
             <div class="table">

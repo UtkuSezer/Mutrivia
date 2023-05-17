@@ -46,6 +46,16 @@ public class GameController {
         webSocketService.sendStartSessionMessage(user.getSessionId());
     }
 
+    @GetMapping("/notifypause/{sessionId}")
+    public void notifyPause(@PathVariable String sessionId){
+        gameService.updatePauseMap(sessionId);
+    }
+
+    @GetMapping("/checkpause/{sessionId}")
+    public boolean checkPause(@PathVariable String sessionId){
+        return gameService.checkPauseMap(sessionId);
+    }
+
     @PutMapping("/join/{sessionId}/{userId}")
     public User joinSession(@PathVariable String sessionId, @PathVariable String userId) throws InterruptedException {
         User participant = gameService.joinSession(sessionId, userId);
@@ -64,9 +74,6 @@ public class GameController {
 
     @PutMapping("/solo/{userId}/{museumId}")
     public User soloSession(@PathVariable String userId, @PathVariable String museumId){
-        if(textDataService.findTextDataByMuseumId(museumId).size() == 0){
-            return null;
-        }
         return gameService.startSoloSession(userId, museumId);
     }
 
