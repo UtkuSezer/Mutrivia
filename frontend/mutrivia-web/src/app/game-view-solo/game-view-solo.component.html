@@ -1,16 +1,18 @@
 
 <div *ngIf="!isGamePaused && currentQuestion!=null">
-    <h5>Timer: {{timeLeft}}</h5>
-    <div class="row">
+    <div class="progress-bar-container">
+        <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
+    </div>
+    <div class="row" style="background-color: transparent;">
     <div class="mt-4">
         <h4>{{currentQuestion.questionStatement}}</h4>
         <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
-            <button (click)="onClickOption(i)" type="button" class="btn btn-outline-secondary mt-3">{{choice}}</button>
+            <button [disabled]="clicked" (click)="onClickOption(i)" id="{{i}}" type="button" class="btn btn-outline-secondary mt-3 btn-block">{{choice}}</button>
         </div>
     </div>
     
     </div>
-    <button (click)="onClickGenerateQuestion()" class="btn btn-primary mt-4">Next Question</button>
+    <!--button (click)="onClickGenerateQuestion()" class="btn btn-primary mt-4">Next Question</button-->
     <button (click)="onClickLeaveGame()" class="btn btn-danger mt-4">End Quiz</button>
 </div>
 

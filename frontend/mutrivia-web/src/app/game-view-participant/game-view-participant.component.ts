@@ -35,6 +35,8 @@ export class GameViewParticipantComponent implements OnInit {
   timeLeft: number = 30;
   interval !: any;
   loaderEndQuiz = false;
+  timerRatioString: string = "100%";
+  clicked = false;
 
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
@@ -73,6 +75,7 @@ export class GameViewParticipantComponent implements OnInit {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
+        this.timerRatioString = ((this.timeLeft / 30) * 100).toString() + "%";
       } else {
         this.pauseTimer();
         this.setUsers();
@@ -108,6 +111,9 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onClickOption(i:number){
+    document.getElementById(i.toString())!.style.backgroundColor = "#ffb74d";
+    document.getElementById(i.toString())!.style.color = "white";
+    this.clicked = true;
     if(this.currentQuestion.correctChoiceIndex == i){
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
@@ -172,6 +178,7 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onQuestionMessageReceived(message: any) {
+    this.clicked = false;
     this.pauseTimer();
     let question: Question = JSON.parse(message.body);
     this.currentQuestion = question;

@@ -28,6 +28,8 @@ export class GameViewSoloComponent implements OnInit {
   pauseTimeLeft: number = 5;
   isGamePaused: boolean = false
   isGameStarted: boolean = false
+  timerRatioString: string = "100%";
+  clicked = false;
   
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
@@ -47,6 +49,7 @@ export class GameViewSoloComponent implements OnInit {
   }
 
   onClickGenerateQuestion(){
+    this.clicked = false;
     this.gameDataService.generateQuestion(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         if(data.questionStatement === "endsession"){
@@ -62,6 +65,9 @@ export class GameViewSoloComponent implements OnInit {
 
   onClickOption(i:number){
     //this.pauseTimer()
+    document.getElementById(i.toString())!.style.backgroundColor = "#ffb74d";
+    document.getElementById(i.toString())!.style.color = "white";
+    this.clicked = true;
     if(this.currentQuestion.correctChoiceIndex == i){
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
@@ -87,6 +93,7 @@ export class GameViewSoloComponent implements OnInit {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
+        this.timerRatioString = ((this.timeLeft / 30) * 100).toString() + "%";
       } else {
         this.resetPauseTimer();
         this.isGamePaused = true;
