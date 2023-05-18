@@ -17,19 +17,33 @@
 </div>
 
 <div *ngIf="isGamePaused" class="">
+    <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
+        Your Answer is Correct!
+    </div>
+    <div *ngIf="!isAnswerCorrect" class="mt-4 alert alert-danger" role="alert">
+        Your Answer is False...
+    </div>
     <h5>Your Score:</h5>
-    <table style="max-height:100%; overflow:auto" class="table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{myUser.username}}</td>
-                <td>{{myUser.score}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table">
+                <div class="row header">
+                    <div class="cell">
+                        Username
+                    </div>
+                    <div class="cell">
+                        Score
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell" data-title="Username">
+                        {{myUser.username}}
+                    </div>
+                    <div class="cell" data-title="Score">
+                        {{myUser.score}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -192,8 +192,6 @@ iframe {
 @media(max-width:768px) {
     .row {
         border-bottom: 1px solid #f2f2f2;
-        padding-bottom: 18px;
-        padding-top: 30px;
         padding-right: 15px;
         margin: 0
     }

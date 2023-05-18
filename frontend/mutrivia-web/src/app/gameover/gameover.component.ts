@@ -14,6 +14,7 @@ export class GameoverComponent implements OnInit {
 
   users: User[] = []
   myUser!: User
+  loadingButton = false;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -39,10 +40,12 @@ export class GameoverComponent implements OnInit {
   }
 
   onClickEndSession(){
+    this.loadingButton = true;
     if(sessionStorage.getItem('isHost')){
       this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
         data => {
           sessionStorage.removeItem("isHost");
+          this.loadingButton = false;
           this.router.navigate(['menu'])
         }
       )
@@ -51,6 +54,7 @@ export class GameoverComponent implements OnInit {
       this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
         data => {
           sessionStorage.removeItem("isParticipant");
+          this.loadingButton = false;
           this.router.navigate(['menu'])
         }
       )

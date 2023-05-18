@@ -19,21 +19,39 @@
     <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
         Your Answer is Correct!
     </div>
+    <div *ngIf="!isAnswerCorrect" class="mt-4 alert alert-danger" role="alert">
+        Your Answer is False...
+    </div>
     <h5>Current Scores:</h5>
-    <table style="max-height:100%; overflow:auto" class="table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td>{{user.username}}</td>
-                <td>{{user.score}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table">
+                <div class="row header">
+                    <div class="cell">
+                        Username
+                    </div>
+                    <div class="cell">
+                        Score
+                    </div>
+                </div>
+                <div class="row" *ngFor="let user of users">
+                    <div *ngIf="myUser.userId == user.userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                        {{user.username}}
+                    </div>
+                    <div *ngIf="myUser.userId == user.userId" class="cell" style="background-color: #ffda96;" data-title="Score">
+                        {{user.score}}
+                    </div>
+
+                    <div *ngIf="myUser.userId != user.userId" class="cell" data-title="Username">
+                        {{user.username}}
+                    </div>
+                    <div *ngIf="myUser.userId != user.userId" class="cell" data-title="Score">
+                        {{user.score}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div *ngIf="!isGameStarted">
@@ -58,20 +76,21 @@
             <div class="table">
                 <div class="row header">
                     <div class="cell">
-                        User ID
-                    </div>
-                    <div class="cell">
                         Username
                     </div>
                 </div>
-                <div class="row" *ngFor="let user of users">
-                    <div class="cell" data-title="User ID">
-                        {{user.userId}}
+                <ng-container *ngFor="let user of users">
+                    <div class="row" *ngIf="myUser.userId == user.userId" style="background-color: #ffda96;">
+                        <div *ngIf="myUser.userId == user.userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                            {{user.username}}
+                        </div>
                     </div>
-                    <div class="cell" data-title="Username">
-                        {{user.username}}
+                    <div  class="row" *ngIf="myUser.userId != user.userId">
+                        <div  class="cell" data-title="Username">
+                            {{user.username}}
+                        </div>
                     </div>
-                </div>
+                </ng-container>
             </div>
         </div>
     </div>

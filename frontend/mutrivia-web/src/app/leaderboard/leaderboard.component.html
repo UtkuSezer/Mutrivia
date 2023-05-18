@@ -1,21 +1,99 @@
-<h3 class="text-primary">Quiz Finished!</h3>
-<h4 style="color:rgb(131, 130, 130)">Leaderboard:</h4>
+<h3 style = "color:rgb(81, 45, 168); font-weight: 600; text-align: center;">Quiz Finished!</h3>
+<h4 style = "color:rgb(81, 45, 168); font-weight: 600; text-align: center;">Leaderboard</h4>
 
-<div class="col-4">
-    <table style="max-height:100%; overflow:auto" class="table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let record of leaderboardRecords">
-                <td>{{record.username}}</td>
-                <td>{{record.score}}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container-table100">
+    <div class="wrap-table100">
+        <div class="table">
+            <div class="row header">
+                <div class="cell">
+                    Username
+                </div>
+                <div class="cell">
+                    Score
+                </div>
+            </div>
+            
+            <div class="row" *ngIf="leaderboardRecords[0] && myUser.userId == leaderboardRecords[0].userId" style="background-color: #ffda96;">
+                <div *ngIf="myUser.userId == leaderboardRecords[0].userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                    <i style="color: #C9B037;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[0].username}}
+                </div>
+                <div *ngIf="myUser.userId == leaderboardRecords[0].userId" class="cell" style="background-color: #ffda96;" data-title="Score">
+                    {{leaderboardRecords[0].score}}
+                </div>
+            </div>
+            <div  class="row" *ngIf="leaderboardRecords[0] && myUser.userId != leaderboardRecords[0].userId">
+                <div  class="cell" data-title="Username">
+                    <i style="color: #C9B037;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[0].username}}
+                </div>
+                <div *ngIf="myUser.userId != leaderboardRecords[0].userId" class="cell" data-title="Score">
+                    {{leaderboardRecords[0].score}}
+                </div>
+            </div>
+
+            <div class="row" *ngIf="leaderboardRecords[1] && myUser.userId == leaderboardRecords[1].userId" style="background-color: #ffda96;">
+                <div *ngIf="myUser.userId == leaderboardRecords[1].userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                    <i style="color: #D7D7D7;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[1].username}}
+                </div>
+                <div *ngIf="myUser.userId == leaderboardRecords[1].userId" class="cell" style="background-color: #ffda96;" data-title="Score">
+                    {{leaderboardRecords[1].score}}
+                </div>
+            </div>
+            <div  class="row" *ngIf="leaderboardRecords[1] && myUser.userId != leaderboardRecords[1].userId">
+                <div  class="cell" data-title="Username">
+                    <i style="color: #D7D7D7;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[1].username}}
+                </div>
+                <div *ngIf="myUser.userId != leaderboardRecords[1].userId" class="cell" data-title="Score">
+                    {{leaderboardRecords[1].score}}
+                </div>
+            </div>
+
+            <div class="row" *ngIf="leaderboardRecords[2] && myUser.userId == leaderboardRecords[2].userId" style="background-color: #ffda96;">
+                <div *ngIf="myUser.userId == leaderboardRecords[2].userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                    <i style="color: #6A3805;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[2].username}}
+                </div>
+                <div *ngIf="myUser.userId == leaderboardRecords[2].userId" class="cell" style="background-color: #ffda96;" data-title="Score">
+                    {{leaderboardRecords[2].score}}
+                </div>
+            </div>
+            <div  class="row" *ngIf="leaderboardRecords[2] && myUser.userId != leaderboardRecords[2].userId">
+                <div  class="cell" data-title="Username">
+                    <i style="color: #6A3805;" class="bi bi-award fa-lg"></i>
+                    {{leaderboardRecords[2].username}}
+                </div>
+                <div *ngIf="myUser.userId != leaderboardRecords[2].userId" class="cell" data-title="Score">
+                    {{leaderboardRecords[2].score}}
+                </div>
+            </div>
+
+            <ng-container *ngFor="let user of leaderboardRecords.slice(3,leaderboardRecords.length)">
+                <div class="row" *ngIf="user && myUser.userId == user.userId" style="background-color: #ffda96;">
+                    <div *ngIf="myUser.userId == user.userId" class="cell" style="background-color: #ffda96;" data-title="Username">
+                        {{user.username}}
+                    </div>
+                    <div *ngIf="myUser.userId == user.userId" class="cell" style="background-color: #ffda96;" data-title="Score">
+                        {{user.score}}
+                    </div>
+                </div>
+                <div  class="row" *ngIf="user && myUser.userId != user.userId">
+                    <div  class="cell" data-title="Username">
+                        {{user.username}}
+                    </div>
+                    <div *ngIf="myUser.userId != user.userId" class="cell" data-title="Score">
+                        {{user.score}}
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
 </div>
 
-<button (click)="onClickEndSession()" class="btn btn-primary mt-4">Continue to Main Menu</button>
+<button (click)="onClickEndSession()" class="btn btn-back mt-4" *ngIf="!loadingButton">Continue to Main Menu</button>
+<button class="btn btn-back mt-4" type="button" disabled *ngIf="loadingButton">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Loading...
+</button>

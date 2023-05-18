@@ -14,6 +14,7 @@ import { LeaderboardRecord } from '../models/leaderboard-record';
 export class LeaderboardComponent {
   leaderboardRecords: LeaderboardRecord[] = []
   myUser!: User
+  loadingButton = false;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -39,9 +40,11 @@ export class LeaderboardComponent {
   }
 
   onClickEndSession(){
+    this.loadingButton = true;
     this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         sessionStorage.removeItem("isSolo");
+        this.loadingButton = false;
         this.router.navigate(['menu'])
       }
     )

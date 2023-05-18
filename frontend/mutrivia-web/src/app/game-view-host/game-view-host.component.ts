@@ -90,6 +90,7 @@ export class GameViewHostComponent implements OnInit {
 
   onClickStartQuiz(){
     this.loaderStartQuiz = true;
+    
     this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.onClickGenerateQuestion();
@@ -161,8 +162,8 @@ export class GameViewHostComponent implements OnInit {
         this.gameDataService.checkPause(this.myUser.sessionId as string).subscribe(
           data => {
             if(data == true){
-              this.isGamePaused = false;
               this.onClickGenerateQuestion();
+              //this.isGamePaused = false;
               this.pausePauseTimer();
             }
             else{
@@ -221,13 +222,16 @@ export class GameViewHostComponent implements OnInit {
     this.clicked = false;
     let question: Question = JSON.parse(message.body);
     if(question.questionStatement === "endsession"){
+      question.questionStatement = "Your session has ended.";
       this.onClickEndSession();
     }
     this.currentQuestion = question;
     this.isAnswerCorrect = false;
     this.resetTimer();
-    this.startTimer()
+    this.startTimer();
+    this.isGamePaused = false;
   }
+
   onNewUserMessageReceived(message: any) {
     let user: User = JSON.parse(message.body);
     console.log("User joined with username: " + user.username);

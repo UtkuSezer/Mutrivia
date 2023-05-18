@@ -21,6 +21,7 @@ export class GameViewSoloComponent implements OnInit {
   stompClient: any;
   webSocketEndPoint: string = 'http://localhost:8080/ws';
   questionTopic: string = "/topic/question/";
+  isAnswerCorrect: boolean = false
 
   timeLeft: number = 30;
   interval !: any;
@@ -57,13 +58,16 @@ export class GameViewSoloComponent implements OnInit {
     this.gameDataService.generateQuestion(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         if(data.questionStatement == "endsession"){
+          data.questionStatement = "Your session has ended.";
           console.log("Finish Quiz")
           this.onClickLeaveGame();
         }
         this.currentQuestion = data
         console.log("Question Set")
+        this.isAnswerCorrect = false;
         this.resetTimer();
         this.startTimer();
+        this.isGamePaused = false;
       }
     )
   }
@@ -77,6 +81,7 @@ export class GameViewSoloComponent implements OnInit {
       this.userDataService.addPointsToUser(this.myUser.userId, this.timeLeft*10).subscribe(
         data=>{
           console.log("CORRECT, POINTS: ", this.timeLeft*10 );
+          this.isAnswerCorrect = true;
           this.resetPauseTimer();
           this.isGamePaused = true;
           this.startPauseTimer();
@@ -87,6 +92,7 @@ export class GameViewSoloComponent implements OnInit {
     }
     else{
       console.log("FALSE");
+      this.isAnswerCorrect = false
       this.resetPauseTimer();
       this.isGamePaused = true;
       this.startPauseTimer();
@@ -123,7 +129,7 @@ export class GameViewSoloComponent implements OnInit {
       } else {
         this.onClickGenerateQuestion();
         this.pausePauseTimer();
-        this.isGamePaused = false;
+        //this.isGamePaused = false;
       }
     },1000)
   }
