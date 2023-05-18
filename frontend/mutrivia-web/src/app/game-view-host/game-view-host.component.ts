@@ -94,6 +94,11 @@ export class GameViewHostComponent implements OnInit {
     console.log("User array length: " + this.users.length)
     
     if (this.users.length <= 1) {
+      this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          sessionStorage.removeItem("isHost");
+        }
+      )
       this.enterMuseumIdSolo();
     }
     else {
