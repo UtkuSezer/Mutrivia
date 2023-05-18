@@ -90,12 +90,35 @@ export class GameViewHostComponent implements OnInit {
 
   onClickStartQuiz(){
     this.loaderStartQuiz = true;
+    console.log("User array: " + this.users)
+    console.log("User array length: " + this.users.length)
     
-    this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
+    if (this.users.length <= 1) {
+      this.enterMuseumIdSolo();
+    }
+    else {
+      this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          this.onClickGenerateQuestion();
+          this.loaderStartQuiz = false;
+          this.isGameStarted = true;
+        }
+      )
+    }
+  }
+
+  /**
+   * Function if host tries to start session by himself.
+   */
+  enterMuseumIdSolo(){
+    console.log("Solo session with museum ID: " + this.myUser.museumId)
+    this.loaderStartQuiz = true;
+    this.gameDataService.soloSession(sessionStorage.getItem('userId') as string, this.myUser.museumId).subscribe(
       data => {
-        this.onClickGenerateQuestion();
+        this.isGameStarted = false;
+        sessionStorage.setItem('isSolo', "true")
         this.loaderStartQuiz = false;
-        this.isGameStarted = true;
+        this.router.navigate(['solo'])
       }
     )
   }
