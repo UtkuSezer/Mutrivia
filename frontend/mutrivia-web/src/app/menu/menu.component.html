@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="menu.component.css">
 
-<button (click)="onClickHostSession()" type="button" style="height: 15vh;" class="btn btn-host btn-lg col-12 mt-3">Host a new Session</button>
-<button (click)="onClickJoinSession()" type="button" style="height: 15vh;" class="btn btn-join btn-lg col-12 mt-3">Join a Session</button>
-<button (click)="onClickSoloSession()" type="button" style="height: 15vh;" class="btn btn-solo btn-lg col-12 mt-3">Play Solo</button>
+<button [disabled]="loader" (click)="onClickHostSession()" type="button" style="height: 15vh;" class="btn btn-host btn-lg col-12 mt-3">Host a new Session</button>
+<button [disabled]="loader" (click)="onClickJoinSession()" type="button" style="height: 15vh;" class="btn btn-join btn-lg col-12 mt-3">Join a Session</button>
+<button [disabled]="loader" (click)="onClickSoloSession()" type="button" style="height: 15vh;" class="btn btn-solo btn-lg col-12 mt-3">Play Solo</button>
 
 <div *ngIf="joinSessionClicked">
     <form (ngSubmit)="enterSessionId()">

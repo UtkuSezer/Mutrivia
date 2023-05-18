@@ -37,6 +37,7 @@ export class GameViewHostComponent implements OnInit {
   loaderStartQuiz = false;
   timerRatioString: string = "100%";
   clicked = false;
+  endSessionClicked = false;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -129,11 +130,13 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickEndSession(){
+    this.endSessionClicked = true;
     this.pausePauseTimer();
     this.pauseTimer();
     this.gameDataService.switchToResults(sessionStorage.getItem('userId') as string).subscribe(
       data => {
         this.isGameStarted = false
+        this.endSessionClicked = false;
         this.router.navigate(['gameover'])
       }
     )
@@ -253,11 +256,13 @@ export class GameViewHostComponent implements OnInit {
       question.questionStatement = "Your session has ended.";
       this.onClickEndSession();
     }
-    this.currentQuestion = question;
-    this.isAnswerCorrect = false;
-    this.resetTimer();
-    this.startTimer();
-    this.isGamePaused = false;
+    else {
+      this.currentQuestion = question;
+      this.isAnswerCorrect = false;
+      this.resetTimer();
+      this.startTimer();
+      this.isGamePaused = false;
+    }
   }
 
   onNewUserMessageReceived(message: any) {

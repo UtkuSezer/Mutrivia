@@ -31,6 +31,7 @@ export class GameViewSoloComponent implements OnInit {
   isGameStarted: boolean = false
   timerRatioString: string = "100%";
   clicked = false;
+  loaderEndQuiz = false;
   
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
@@ -62,12 +63,14 @@ export class GameViewSoloComponent implements OnInit {
           console.log("Finish Quiz")
           this.onClickLeaveGame();
         }
-        this.currentQuestion = data
-        console.log("Question Set")
-        this.isAnswerCorrect = false;
-        this.resetTimer();
-        this.startTimer();
-        this.isGamePaused = false;
+        else {
+          this.currentQuestion = data
+          console.log("Question Set")
+          this.isAnswerCorrect = false;
+          this.resetTimer();
+          this.startTimer();
+          this.isGamePaused = false;
+        }
       }
     )
   }
@@ -143,6 +146,7 @@ export class GameViewSoloComponent implements OnInit {
   }
 
   onClickLeaveGame(){ 
+    this.loaderEndQuiz = true;
     this.pausePauseTimer();
     this.pauseTimer();
     this.gameDataService.checkLeaderboard(this.myUser.userId as string).subscribe(

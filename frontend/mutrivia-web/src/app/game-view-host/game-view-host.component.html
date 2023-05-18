@@ -14,7 +14,12 @@
     
     </div>
     <!--button (click)="onClickGenerateQuestion()" class="btn btn-primary mt-4">Next Question</button-->
-    <button (click)="onClickEndSession()" class="btn btn-danger mt-4">End Quiz</button>
+     <button (click)="onClickEndSession()" type="submit" class="btn btn-danger btn-login mt-4" *ngIf="!endSessionClicked">End Quiz</button>
+        <button class="btn btn-danger btn-login mt-4" type="button" disabled *ngIf="endSessionClicked">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Ending...
+        </button>
+
 </div>
 
 <div *ngIf="isGamePaused" class="">

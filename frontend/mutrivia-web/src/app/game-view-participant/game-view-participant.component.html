@@ -11,7 +11,11 @@
             </div>
         </div>
     </div>
-    <button (click)="onClickLeaveSession()" class="btn btn-danger mt-4">Leave Session</button>
+     <button (click)="onClickLeaveSession()" type="submit" class="btn btn-danger btn-login mt-4" *ngIf="!loaderEndQuiz">Leave Session</button>
+        <button class="btn btn-danger btn-login mt-4" type="button" disabled *ngIf="loaderEndQuiz">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Ending...
+        </button>
 </div>
 
 <div *ngIf="isGamePaused">
