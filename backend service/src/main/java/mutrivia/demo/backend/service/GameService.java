@@ -66,6 +66,7 @@ public class GameService {
         Session session = sessionService.findSessionByHostId(host.getUserId());
         List<TextData> textDataList = textDataService.findTextDataByMuseumId(host.getMuseumId());
         List<User> usersInSession = userService.findUsersInSession(host.getSessionId());
+        sesssionIdAnweredUserCountMap.put(host.getSessionId(), usersInSession.size());
 
         if(session.getTextDataIndex() >= textDataList.size()){
             Question endQuestion = new Question();

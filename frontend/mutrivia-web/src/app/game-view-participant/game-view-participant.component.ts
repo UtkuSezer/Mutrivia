@@ -39,6 +39,8 @@ export class GameViewParticipantComponent implements OnInit {
   timerRatioString: string = "100%";
   clicked = false;
 
+  timerFlag = true;
+
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
     private router: Router) { }
@@ -74,18 +76,23 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   startTimer() {
+    this.timerFlag = true
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
         this.timerRatioString = ((this.timeLeft / 30) * 100).toString() + "%";
       } else {
-        this.pauseTimer();
-        this.setUsers();
-        this.gameDataService.notifyPause(this.myUser.sessionId as string).subscribe(
-          data => {
-            this.isGamePaused = true
-          }
-        )
+        if(this.timerFlag == true){
+          this.timerFlag = false
+          this.pauseTimer();
+          this.setUsers();
+          this.gameDataService.notifyPause(this.myUser.sessionId as string).subscribe(
+            data => {
+              this.isGamePaused = true
+            }
+          )
+        }
+        else{}
       }
     },1000)
   }
