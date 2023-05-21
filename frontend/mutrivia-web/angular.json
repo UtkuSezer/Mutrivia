@@ -31,7 +31,9 @@
             ],
             "scripts": [
               "src/assets/copytext.js"
-            ]
+            ],
+            "baseHref": "/home",
+            "deployUrl": "/home/"
           },
           "configurations": {
             "production": {
