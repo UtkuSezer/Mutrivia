@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDataService } from '../service/user-data.service';
+import { GameDataService } from '../service/game-data.service';
 
 @Component({
   selector: 'app-header',
@@ -10,12 +11,33 @@ import { UserDataService } from '../service/user-data.service';
 export class HeaderComponent implements OnInit {
 
   constructor(private router: Router,
-    private userDataService: UserDataService,) { }
+    private userDataService: UserDataService,
+    private gameDataService: GameDataService) { }
 
   ngOnInit(): void {
   }
 
   goHome(){
+    if(sessionStorage.getItem('isHost') == "true"){
+      this.gameDataService.switchToResults(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+            data => {
+            sessionStorage.removeItem("isHost");
+            }
+          )
+        }
+      )
+    }
+
+    else if(sessionStorage.getItem('isParticipant') == "true"){
+      this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
+        data => {
+          sessionStorage.removeItem("isParticipant");
+        }
+      )
+    }
+
     this.router.navigate(["register"]);
   }
 
