@@ -25,6 +25,7 @@ export class MenuComponent implements OnInit {
   }
 
   enterMuseumIdHost(){
+    if (this.museumId == '') return;
     console.log("Host session as: " + sessionStorage.getItem('userId') as string)
     console.log("Host session with museum ID: " + this.museumId)
     this.loader = true;
@@ -43,6 +44,7 @@ export class MenuComponent implements OnInit {
     )
   }
   enterSessionId(){
+    if (this.sessionId == '') return;
     console.log("Join session with ID: " + this.sessionId)
     this.loader = true;
     this.gameDataService.joinSession(this.sessionId, sessionStorage.getItem('userId') as string).subscribe(
@@ -60,6 +62,7 @@ export class MenuComponent implements OnInit {
     
   }
   enterMuseumIdSolo(){
+    if (this.museumId == '') return;
     console.log("Solo session with museum ID: " + this.museumId)
     this.loader = true;
     this.gameDataService.soloSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
