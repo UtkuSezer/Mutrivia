@@ -41,6 +41,8 @@ export class GameViewHostComponent implements OnInit {
   endSessionClicked = false;
 
   isHostOnly = false;
+  timerFlag = true;
+  pauseTimerFlag = true;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -120,8 +122,6 @@ export class GameViewHostComponent implements OnInit {
         )
       }
     }
-
-
   }
 
   /**
@@ -180,16 +180,21 @@ export class GameViewHostComponent implements OnInit {
   }
 
   startTimer() {
+    this.timerFlag = true;
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
         this.timerRatioString = ((this.timeLeft / 30) * 100).toString() + "%";
       } else {
-        this.resetPauseTimer();
-        this.setUsers();
-        this.isGamePaused = true;
-        this.startPauseTimer();
-        this.pauseTimer();
+        if(this.timerFlag == true){
+          this.resetPauseTimer();
+          this.setUsers();
+          this.isGamePaused = true;
+          this.startPauseTimer();
+          this.pauseTimer();
+          this.timerFlag = false;
+        }
+        else{}
       }
     },1000)
   }
@@ -203,22 +208,28 @@ export class GameViewHostComponent implements OnInit {
   }
 
   startPauseTimer() {
+    this.pauseTimerFlag = true;
     this.pauseInterval = setInterval(() => {
       if(this.pauseTimeLeft > 0) {
         this.pauseTimeLeft--;
       } else {
-        this.gameDataService.checkPause(this.myUser.sessionId as string).subscribe(
-          data => {
-            if(data == true){
-              this.onClickGenerateQuestion();
-              //this.isGamePaused = false;
-              this.pausePauseTimer();
+        if(this.pauseTimerFlag == true){
+          this.pauseTimerFlag = false;
+          this.gameDataService.checkPause(this.myUser.sessionId).subscribe(
+            data => {
+              if(data == true){
+                this.onClickGenerateQuestion();
+                //this.isGamePaused = false;
+                this.pausePauseTimer();
+              }
+              else{
+                this.pauseTimeLeft = 3;
+                this.pauseTimerFlag = true;
+              }
             }
-            else{
-              this.pauseTimeLeft = 3;
-            }
-          }
-        )
+          )
+        }
+        else{}
       }
     },1000)
   }
