@@ -3,6 +3,9 @@
     <div class="progress-bar-container">
         <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
     </div>
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 20vh;" *ngIf="!currentQuestion">
+        <div class="spinner-grow text-warning" role="status"></div>
+    </div>
     <div class="row" style="background-color: transparent;">
         <div class="mt-4">
             <h4>{{currentQuestion.questionStatement}}</h4>
@@ -73,6 +76,8 @@
     </div>
     <!--h5 style="color: rgb(0, 139, 204);" class="mt-4">Waiting for host to start the game.</h5--->
     <div class="mt-4 alert alert-secondary" role="alert">
+        <div class="spinner-border text-secondary" role="status">
+        </div>
         Waiting for host to start the game.
     </div>
     <div class="container-table100">

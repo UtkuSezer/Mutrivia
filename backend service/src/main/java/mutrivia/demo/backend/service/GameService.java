@@ -1,5 +1,6 @@
 package mutrivia.demo.backend.service;
 
+import lombok.Getter;
 import lombok.extern.log4j.Log4j;
 import mutrivia.demo.backend.model.Question;
 import mutrivia.demo.backend.model.Session;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @Service
 @Log4j
 public class GameService {
@@ -28,6 +30,7 @@ public class GameService {
     private LeaderboardService leaderboardService;
 
     private Map<String, Integer> sessionIdPausedUserCountMap;
+    private Map<String, Integer> sesssionIdAnweredUserCountMap;
 
     public GameService(UserService userService, SessionService sessionService, TextDataService textDataService, QuestionService questionService, TextSender textSender, QuestionReceiver questionReceiver, WebSocketService webSocketService, LeaderboardService leaderboardService) {
         this.userService = userService;
@@ -39,6 +42,7 @@ public class GameService {
         this.webSocketService = webSocketService;
         this.leaderboardService = leaderboardService;
         this.sessionIdPausedUserCountMap = new HashMap<>();
+        this.sesssionIdAnweredUserCountMap = new HashMap<>();
     }
 
     public void generateQuestion(String userId){
@@ -100,6 +104,7 @@ public class GameService {
         sessionService.updateSession(session);
         List<User> usersInSession = userService.findUsersInSession(session.getSessionId());
         sessionIdPausedUserCountMap.put(session.getSessionId(), usersInSession.size());
+        sesssionIdAnweredUserCountMap.put(session.getSessionId(), usersInSession.size());
     }
 
     public User joinSession(String sessionId, String userId){
@@ -145,6 +150,8 @@ public class GameService {
 
     public void endSession(String userId){
         User user = userService.findUserById(userId);
+        sessionIdPausedUserCountMap.remove(user.getSessionId());
+        sesssionIdAnweredUserCountMap.remove(user.getSessionId());
         if(user.getState().equals(UserStateConstants.HOST_USER)){
             String winner;
             int max = Integer.MIN_VALUE;
@@ -168,8 +175,11 @@ public class GameService {
     }
 
     public void leaveSession(User user){
-        int currentUserCount = sessionIdPausedUserCountMap.get(user.getSessionId());
-        sessionIdPausedUserCountMap.put(user.getSessionId(), currentUserCount-1);
+        if(sessionIdPausedUserCountMap.get(user.getSessionId()) != null){
+            int currentUserCount = sessionIdPausedUserCountMap.get(user.getSessionId());
+            sessionIdPausedUserCountMap.put(user.getSessionId(), currentUserCount-1);
+            sesssionIdAnweredUserCountMap.put(user.getSessionId(), currentUserCount-1);
+        }
         user.setState(UserStateConstants.INITIAL_USER);
         user.setSessionId("initial");
         user.setScore(0);
@@ -189,6 +199,22 @@ public class GameService {
         }
         else{
             return false;
+        }
+    }
+
+    public void answerQuestion(String userId){
+        User user = userService.findUserById(userId);
+        int usersLeftToAnswerCount = sesssionIdAnweredUserCountMap.get(user.getSessionId()) - 1;
+        System.out.println("USERS LEFT TO ANSWER: " + usersLeftToAnswerCount);
+        if(usersLeftToAnswerCount == 0){
+            System.out.println("Change Question");
+            List<User> usersInSession = userService.findUsersInSession(user.getSessionId());
+            sesssionIdAnweredUserCountMap.put(user.getSessionId(), usersInSession.size());
+            webSocketService.changeSessionQuestion(user.getSessionId());
+        }
+        else{
+            System.out.println("A user answered");
+            sesssionIdAnweredUserCountMap.put(user.getSessionId(), usersLeftToAnswerCount);
         }
     }
 }

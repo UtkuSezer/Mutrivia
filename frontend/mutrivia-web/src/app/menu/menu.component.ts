@@ -15,6 +15,8 @@ export class MenuComponent implements OnInit {
   sessionId: string = ''
   museumId: string = ''
   loader = false;
+  idExists = true;
+  sessionExists = true;
 
   constructor(private router: Router,
     private gameDataService: GameDataService) { }
@@ -28,6 +30,11 @@ export class MenuComponent implements OnInit {
     this.loader = true;
     this.gameDataService.hostSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
+        if (data == null){
+          this.idExists = false;
+          this.loader = false;
+          return;
+        }
         console.log("Session ID: " + data.sessionId);
         sessionStorage.setItem('isHost', "true")
         this.loader = false;
@@ -40,6 +47,11 @@ export class MenuComponent implements OnInit {
     this.loader = true;
     this.gameDataService.joinSession(this.sessionId, sessionStorage.getItem('userId') as string).subscribe(
       data => {
+        if (data == null){
+          this.sessionExists = false;
+          this.loader = false;
+          return;
+        }
         sessionStorage.setItem('isParticipant', "true")
         this.loader = false;
         this.router.navigate(['participant'])
@@ -52,6 +64,11 @@ export class MenuComponent implements OnInit {
     this.loader = true;
     this.gameDataService.soloSession(sessionStorage.getItem('userId') as string, this.museumId).subscribe(
       data => {
+        if (data == null){
+          this.idExists = false;
+          this.loader = false;
+          return;
+        }
         sessionStorage.setItem('isSolo', "true")
         this.loader = false;
         this.router.navigate(['solo'])
@@ -60,16 +77,19 @@ export class MenuComponent implements OnInit {
   }
 
   onClickHostSession(){
+    this.idExists = true;
     this.hostSessionClicked = true
     this.joinSessionClicked = false
     this.soloSessionClicked = false
   }
   onClickJoinSession(){
+    this.sessionExists = true;
     this.hostSessionClicked = false
     this.joinSessionClicked = true
     this.soloSessionClicked = false
   }
   onClickSoloSession(){
+    this.idExists = true;
     this.hostSessionClicked = false
     this.joinSessionClicked = false
     this.soloSessionClicked = true

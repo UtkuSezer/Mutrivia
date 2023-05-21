@@ -1,10 +1,13 @@
-
 <div *ngIf="isGameStarted && !isGamePaused">
     <div class="progress-bar-container">
         <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
     </div>
+
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 20vh;" *ngIf="!currentQuestion">
+        <div class="spinner-grow text-warning" role="status"></div>
+    </div>
     <div class="row" style="background-color: transparent;">
-        
+
         <div class="mt-4">
             <h4>{{currentQuestion.questionStatement}}</h4>
             <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
@@ -19,11 +22,10 @@
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Ending...
         </button>
-
 </div>
 
 <div *ngIf="isGamePaused" class="">
-    <!---h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2--->
+    <!--h2 *ngIf="isAnswerCorrect" class="text-success">Your Answer Is Correct!</h2-->
     <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
         Your Answer is Correct!
     </div>
@@ -74,6 +76,10 @@
                 <i class="bi bi-clipboard"></i>
             </button>
         </div>
+    </div>
+
+    <div *ngIf="isHostOnly" class="mt-4 alert alert-danger" role="alert">
+        You can't host a session with only one player!
     </div>
 
     <div class="container-table100">

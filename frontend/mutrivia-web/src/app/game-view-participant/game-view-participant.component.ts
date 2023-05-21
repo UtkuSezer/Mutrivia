@@ -31,6 +31,7 @@ export class GameViewParticipantComponent implements OnInit {
   deleteUserTopic: string = "/topic/deleteuser/";
   deleteSessionTopic: string = "/topic/deletesession/";
   startSessionTopic: string = "/topic/startsession/";
+  changeQuestionTopic: string = "/topic/changequestion/";
 
   timeLeft: number = 30;
   interval !: any;
@@ -124,12 +125,18 @@ export class GameViewParticipantComponent implements OnInit {
         data=>{
           console.log("CORRECT, POINTS: ", this.timeLeft*10 );
           this.isAnswerCorrect = true;
+          this.gameDataService.answerQuestion(this.myUser.userId as string).subscribe(
+            data=>{}
+          )
         }
       )
     }
     else{
       console.log("FALSE");
       this.isAnswerCorrect = false;
+      this.gameDataService.answerQuestion(this.myUser.userId as string).subscribe(
+        data=>{}
+      )
     }
   }
 
@@ -139,6 +146,7 @@ export class GameViewParticipantComponent implements OnInit {
     this.deleteUserTopic = this.deleteUserTopic + this.myUser.sessionId;
     this.deleteSessionTopic = this.deleteSessionTopic + this.myUser.sessionId;
     this.startSessionTopic = this.startSessionTopic + this.myUser.sessionId;
+    this.changeQuestionTopic = this.changeQuestionTopic + this.myUser.sessionId;
   }
 
   //WebSocket ------------------------------------------------------------------------------
@@ -163,6 +171,9 @@ export class GameViewParticipantComponent implements OnInit {
       });
       _this.stompClient.subscribe(_this.startSessionTopic, function(sdkEvent:any) {
         _this.onStartSessionMessageReceived(sdkEvent);
+      });
+      _this.stompClient.subscribe(_this.changeQuestionTopic, function(sdkEvent:any) {
+        _this.onChangeQuestionMessageReceived(sdkEvent);
       });
     }, this.errorCallBack);
   }
@@ -212,6 +223,10 @@ export class GameViewParticipantComponent implements OnInit {
   }
   onStartSessionMessageReceived(message: any) {
     this.isGameStarted = true
+  }
+  onChangeQuestionMessageReceived(message: any){
+    console.log("CHANGE QUESTION")
+    this.timeLeft = 0;
   }
   //End of WebSocket ---------------------------------------------------------------------
 

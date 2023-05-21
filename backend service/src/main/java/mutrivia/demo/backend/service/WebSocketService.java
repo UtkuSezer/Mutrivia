@@ -37,4 +37,8 @@ public class WebSocketService {
     public void sendDeleteSessionMessage(String sessionId) {
         this.messagingTemplate.convertAndSend("/topic/deletesession/" + sessionId, sessionId);
     }
+
+    public void changeSessionQuestion(String sessionId) {
+        this.messagingTemplate.convertAndSend("/topic/changequestion/" + sessionId, sessionId);
+    }
 }

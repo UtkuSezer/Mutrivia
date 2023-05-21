@@ -42,7 +42,7 @@ export class GameoverComponent implements OnInit {
   onClickEndSession(){
     this.loadingButton = true;
     if(sessionStorage.getItem('isHost')){
-      this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+      this.gameDataService.endSession(this.myUser.userId as string).subscribe(
         data => {
           sessionStorage.removeItem("isHost");
           this.loadingButton = false;
@@ -51,7 +51,7 @@ export class GameoverComponent implements OnInit {
       )
     }
     if(sessionStorage.getItem('isParticipant')){
-      this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
+      this.gameDataService.leaveSession(this.myUser.userId as string).subscribe(
         data => {
           sessionStorage.removeItem("isParticipant");
           this.loadingButton = false;

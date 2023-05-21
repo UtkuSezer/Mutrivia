@@ -61,4 +61,8 @@ export class GameDataService {
   checkPause(sessionId:string){
     return this.http.get<boolean>(`${GAME_API_URL}/checkpause/${sessionId}`);
   }
+
+  answerQuestion(userId: string){
+    return this.http.get(`${GAME_API_URL}/answerquestion/${userId}`);
+  }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
@@ -56,9 +57,19 @@ public class GameController {
         return gameService.checkPauseMap(sessionId);
     }
 
+    @GetMapping("/answerquestion/{userId}")
+    public void questionAnswered(@PathVariable String userId){
+        gameService.answerQuestion(userId);
+    }
+
     @PutMapping("/join/{sessionId}/{userId}")
     public User joinSession(@PathVariable String sessionId, @PathVariable String userId) throws InterruptedException {
-        User participant = gameService.joinSession(sessionId, userId);
+        User participant;
+        try {
+            participant = gameService.joinSession(sessionId, userId);
+        } catch ( NoSuchElementException e) {
+            return null;
+        }
         Thread.sleep(1000);
         webSocketService.sendNewUserMessage(participant, participant.getSessionId());
         return participant;
@@ -74,6 +85,9 @@ public class GameController {
 
     @PutMapping("/solo/{userId}/{museumId}")
     public User soloSession(@PathVariable String userId, @PathVariable String museumId){
+        if(textDataService.findTextDataByMuseumId(museumId).size() == 0){
+            return null;
+        }
         return gameService.startSoloSession(userId, museumId);
     }
 

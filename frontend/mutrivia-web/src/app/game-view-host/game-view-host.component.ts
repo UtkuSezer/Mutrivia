@@ -29,6 +29,7 @@ export class GameViewHostComponent implements OnInit {
   questionTopic: string = "/topic/question/";
   newUserTopic: string = "/topic/newuser/";
   deleteUserTopic: string = "/topic/deleteuser/";
+  changeQuestionTopic: string = "/topic/changequestion/";
 
   timeLeft: number = 30;
   interval !: any;
@@ -38,6 +39,8 @@ export class GameViewHostComponent implements OnInit {
   timerRatioString: string = "100%";
   clicked = false;
   endSessionClicked = false;
+
+  isHostOnly = false;
 
   constructor(private gameDataService: GameDataService,
     private userDataService: UserDataService,
@@ -79,6 +82,7 @@ export class GameViewHostComponent implements OnInit {
     this.questionTopic = this.questionTopic + this.myUser.userId;
     this.newUserTopic = this.newUserTopic + this.myUser.sessionId;
     this.deleteUserTopic = this.deleteUserTopic + this.myUser.sessionId;
+    this.changeQuestionTopic = this.changeQuestionTopic + this.myUser.sessionId;
   }
 
   onClickGenerateQuestion(){
@@ -90,27 +94,34 @@ export class GameViewHostComponent implements OnInit {
   }
 
   onClickStartQuiz(){
-    this.loaderStartQuiz = true;
-    console.log("User array: " + this.users)
-    console.log("User array length: " + this.users.length)
+    if(this.users.length == 1){
+      this.isHostOnly = true
+    }
+    else{
+      this.loaderStartQuiz = true;
+      console.log("User array: " + this.users)
+      console.log("User array length: " + this.users.length)
+      
+      if (this.users.length <= 1) {
+        this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+          data => {
+            sessionStorage.removeItem("isHost");
+          }
+        )
+        this.enterMuseumIdSolo();
+      }
+      else {
+        this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
+          data => {
+            this.onClickGenerateQuestion();
+            this.loaderStartQuiz = false;
+            this.isGameStarted = true;
+          }
+        )
+      }
+    }
+
     
-    if (this.users.length <= 1) {
-      this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
-        data => {
-          sessionStorage.removeItem("isHost");
-        }
-      )
-      this.enterMuseumIdSolo();
-    }
-    else {
-      this.gameDataService.startSession(sessionStorage.getItem('userId') as string).subscribe(
-        data => {
-          this.onClickGenerateQuestion();
-          this.loaderStartQuiz = false;
-          this.isGameStarted = true;
-        }
-      )
-    }
   }
 
   /**
@@ -153,12 +164,18 @@ export class GameViewHostComponent implements OnInit {
         data=>{
           console.log("CORRECT, POINTS: ", this.timeLeft*10 );
           this.isAnswerCorrect = true;
+          this.gameDataService.answerQuestion(this.myUser.userId as string).subscribe(
+            data=>{}
+          )
         }
       )
     }
     else{
       console.log("FALSE");
       this.isAnswerCorrect = false
+      this.gameDataService.answerQuestion(this.myUser.userId as string).subscribe(
+        data=>{}
+      )
     }
   }
 
@@ -231,6 +248,9 @@ export class GameViewHostComponent implements OnInit {
       _this.stompClient.subscribe(_this.questionTopic, function(sdkEvent:any) {
         _this.onQuestionMessageReceived(sdkEvent);
       });
+      _this.stompClient.subscribe(_this.changeQuestionTopic, function(sdkEvent:any) {
+        _this.onChangeQuestionMessageReceived(sdkEvent);
+      });
     }, this.errorCallBack);
   }
 
@@ -270,14 +290,18 @@ export class GameViewHostComponent implements OnInit {
     console.log("User joined with username: " + user.username);
     this.users.unshift(user)
     if(user.userId == this.myUser.userId){
-      this.myUser = user;
+      this.myUser = user;  
     }
+    this.isHostOnly = false;
   }
   onDeleteUserMessageReceived(message: any) {
     let userId: string = (message.body as string);
     this.users = this.users.filter(x => x.userId !== userId);
   }
-
+  onChangeQuestionMessageReceived(message: any){
+    this.timeLeft = 0;
+    console.log("CHANGE QUESTION")
+  }
   //End of WebSocket ---------------------------------------------------------------------
 
 }
