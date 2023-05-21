@@ -119,6 +119,8 @@ export class GameViewParticipantComponent implements OnInit {
   }
 
   onSessionEndedByHost(){
+    this.pauseTimer();
+    this.resetTimer();
     this.isGameStarted = false;
     this.router.navigate(['gameover'])
   }
