@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @Log4j
 public class UserController {
 

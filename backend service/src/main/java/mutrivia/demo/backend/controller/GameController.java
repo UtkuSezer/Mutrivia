@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/api/game")
 public class GameController {
 
     private GameService gameService;
