@@ -25,7 +25,7 @@ export class GameViewHostComponent implements OnInit {
   isAnswerCorrect: boolean = false
 
   stompClient: any;
-  webSocketEndPoint: string = 'http://localhost:8080/ws';
+  webSocketEndPoint: string = 'http://www.mutrivia.com/api/ws';
   questionTopic: string = "/topic/question/";
   newUserTopic: string = "/topic/newuser/";
   deleteUserTopic: string = "/topic/deleteuser/";
@@ -101,7 +101,7 @@ export class GameViewHostComponent implements OnInit {
       this.loaderStartQuiz = true;
       console.log("User array: " + this.users)
       console.log("User array length: " + this.users.length)
-      
+
       if (this.users.length <= 1) {
         this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
           data => {
@@ -121,7 +121,7 @@ export class GameViewHostComponent implements OnInit {
       }
     }
 
-    
+
   }
 
   /**
@@ -230,7 +230,7 @@ export class GameViewHostComponent implements OnInit {
   resetPauseTimer() {
     this.pauseTimeLeft = 10
   }
-  
+
   //WebSocket ------------------------------------------------------------------------------
 
   connect(): void {
@@ -290,7 +290,7 @@ export class GameViewHostComponent implements OnInit {
     console.log("User joined with username: " + user.username);
     this.users.unshift(user)
     if(user.userId == this.myUser.userId){
-      this.myUser = user;  
+      this.myUser = user;
     }
     this.isHostOnly = false;
   }

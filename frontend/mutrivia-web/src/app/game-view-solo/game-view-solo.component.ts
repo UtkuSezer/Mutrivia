@@ -19,7 +19,7 @@ export class GameViewSoloComponent implements OnInit {
   currentQuestion!: Question
 
   stompClient: any;
-  webSocketEndPoint: string = 'http://localhost:8080/ws';
+  webSocketEndPoint: string = 'http://www.mutrivia.com/api/ws';
   questionTopic: string = "/topic/question/";
   isAnswerCorrect: boolean = false
 
@@ -32,7 +32,7 @@ export class GameViewSoloComponent implements OnInit {
   timerRatioString: string = "100%";
   clicked = false;
   loaderEndQuiz = false;
-  
+
   constructor(private userDataService: UserDataService,
     private gameDataService: GameDataService,
     private router: Router) { }
@@ -145,7 +145,7 @@ export class GameViewSoloComponent implements OnInit {
     this.pauseTimeLeft = 5
   }
 
-  onClickLeaveGame(){ 
+  onClickLeaveGame(){
     this.loaderEndQuiz = true;
     this.pausePauseTimer();
     this.pauseTimer();
