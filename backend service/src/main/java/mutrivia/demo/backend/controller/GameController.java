@@ -116,6 +116,11 @@ public class GameController {
         return leaderboardService.getLeaderboardRecords(user.getMuseumId());
     }
 
+    @GetMapping("/sessionindex/{museumId}")
+    public int getSessionQuestionNumber(@PathVariable String museumId){
+        return gameService.getSessionQuestionLength(museumId);
+    }
+
     @GetMapping("/end/{userId}")
     public void endSession(@PathVariable String userId){
         User user = userService.findUserById(userId);
