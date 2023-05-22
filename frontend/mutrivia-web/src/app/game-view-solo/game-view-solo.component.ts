@@ -22,6 +22,8 @@ export class GameViewSoloComponent implements OnInit {
   webSocketEndPoint: string = 'http://localhost:8080/ws';
   questionTopic: string = "/topic/question/";
   isAnswerCorrect: boolean = false
+  questionNumber: number = 0;
+  questionIndex: number = 0;
 
   timeLeft: number = 30;
   interval !: any;
@@ -49,6 +51,11 @@ export class GameViewSoloComponent implements OnInit {
       data => {
         this.myUser = data
         this.onClickGenerateQuestion();
+        this.gameDataService.getQuestionNumber(this.myUser.museumId).subscribe(
+          data => {
+            this.questionNumber = data
+          }
+        )
       }
     )
 
@@ -64,6 +71,7 @@ export class GameViewSoloComponent implements OnInit {
           this.onClickLeaveGame();
         }
         else {
+          this.questionIndex = this.questionIndex + 1
           this.currentQuestion = data
           console.log("Question Set")
           this.isAnswerCorrect = false;

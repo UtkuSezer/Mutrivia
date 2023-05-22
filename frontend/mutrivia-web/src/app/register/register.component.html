@@ -1,24 +1,27 @@
 <link rel="stylesheet" href="register.component.css">
 
-<div class="text-center">
-    
-    <div class="mx-auto w-50 p-3 mb-2 text-white" >
-        <img class="p-3 mb-2 img-fluid" src="assets\img\favicon.png" alt="logo" style="max-width: 100%;"/>
-    </div>
-    <h1 class="text-center" style="color: rgb(81, 45, 168);">Welcome to Mutrivia</h1>
-</div>
 
-<div class="text-center container mt-5">
-    <h4 style="color:rgb(131, 130, 130)">Pick a nickname to start playing.</h4>
-    <form (ngSubmit)="registerUser()">
-        <div class="align-items-center justify-content-center d-grid gap-2 mx-auto mt-4">
-            <input type="text" class="form-control" placeholder="Enter a Nickname" name="username" [(ngModel)]="username" required>
-
-            <button type="submit" class="btn btn-login" *ngIf="!loader">Login</button>
-            <button class="btn-login btn" type="button" disabled *ngIf="loader">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-            </button>
+<div class="cards pb-5">
+    <div class="text-center">
+        
+        <div class="mx-auto w-50 p-3 mb-2 text-white" >
+            <img class="p-3 mb-2 img-fluid" src="assets\img\favicon.png" alt="logo" style="max-width: 100%;"/>
         </div>
-    </form>
+        <h1 class="text-center" style="color: rgb(81, 45, 168);">Welcome to Mutrivia</h1>
+    </div>
+
+    <div class="text-center container mt-5">
+        <h4 style="color:rgb(131, 130, 130)">Pick a nickname to start playing.</h4>
+        <form (ngSubmit)="registerUser()">
+            <div class="align-items-center justify-content-center d-grid gap-2 mx-auto mt-4">
+                <input type="text" class="form-control text-center" placeholder="Enter a Nickname" name="username" [(ngModel)]="username" required>
+
+                <button type="submit" class="btn btn-login" *ngIf="!loader">Login</button>
+                <button class="btn-login btn" type="button" disabled *ngIf="loader">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -30,6 +30,8 @@ export class GameViewHostComponent implements OnInit {
   newUserTopic: string = "/topic/newuser/";
   deleteUserTopic: string = "/topic/deleteuser/";
   changeQuestionTopic: string = "/topic/changequestion/";
+  questionNumber: number = 0;
+  questionIndex: number = 0;
 
   timeLeft: number = 30;
   interval !: any;
@@ -67,6 +69,11 @@ export class GameViewHostComponent implements OnInit {
         this.myUser = data
         this.setTopics()
         this.connect()
+        this.gameDataService.getQuestionNumber(this.myUser.museumId).subscribe(
+          data => {
+            this.questionNumber = data
+          }
+        )
       }
     )
   }
@@ -291,6 +298,7 @@ export class GameViewHostComponent implements OnInit {
     }
     else {
       this.currentQuestion = question;
+      this.questionIndex = this.questionIndex + 1
       this.isAnswerCorrect = false;
       this.resetTimer();
       this.startTimer();

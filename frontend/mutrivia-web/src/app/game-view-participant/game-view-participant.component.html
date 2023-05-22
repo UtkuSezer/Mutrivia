@@ -8,6 +8,7 @@
     </div>
     <div class="row" style="background-color: transparent;">
         <div class="mt-4">
+            <p>{{questionIndex}}/{{questionNumber}}</p>
             <h4>{{currentQuestion.questionStatement}}</h4>
             <div *ngFor="let choice of currentQuestion.options; let i = index" [attr.data-index]="i">
                 <button [disabled]="clicked" (click)="onClickOption(i)" id="{{i}}" type="button" class="btn btn-outline-secondary mt-3 btn-block">{{choice}}</button>
