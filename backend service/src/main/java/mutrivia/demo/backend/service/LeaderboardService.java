@@ -26,7 +26,7 @@ public class LeaderboardService {
     public void checkIfHighScore(User user){
         List<LeaderboardRecord> leaderboardRecordList = leaderboardRepository.findLeaderboardRecordByMuseumIdOrderByScoreAsc(user.getMuseumId());
 
-        if(leaderboardRecordList.size()<10 && user.getScore()>0){
+        if(leaderboardRecordList.size()<10){
             System.out.println("Add to leaderboard");
             LeaderboardRecord newLeaderBoardRecord = new LeaderboardRecord();
             newLeaderBoardRecord.setUserId(user.getUserId());
