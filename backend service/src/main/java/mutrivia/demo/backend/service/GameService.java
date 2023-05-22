@@ -218,4 +218,9 @@ public class GameService {
             sesssionIdAnweredUserCountMap.put(user.getSessionId(), usersLeftToAnswerCount);
         }
     }
+
+    public int getSessionQuestionLength(String museumId){
+        List<TextData> textDataList = textDataService.findTextDataByMuseumId(museumId);
+        return textDataList.size();
+    }
 }

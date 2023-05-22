@@ -52,6 +52,19 @@ export class AppComponent {
           }
         )
       }
+      if(sessionStorage.getItem('isSolo') == "true"){
+        this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
+          data => {
+            this.userDataService.deleteUser(sessionStorage.getItem('userId') as string).subscribe(
+              data => {
+                 sessionStorage.removeItem("userId");
+                 this.fullLoader = false
+                 this.router.navigate(['register']);
+              }
+            )
+          }
+        )
+      }
       else if(sessionStorage.getItem('isParticipant') == "true"){
         this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
           data => {

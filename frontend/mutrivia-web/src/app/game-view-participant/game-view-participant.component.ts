@@ -23,6 +23,8 @@ export class GameViewParticipantComponent implements OnInit {
   myUser!: User
   currentQuestion!: Question
   isAnswerCorrect: boolean = false
+  questionNumber: number = 0
+  questionIndex: number = 0
 
   stompClient: any;
   webSocketEndPoint: string = 'http://www.mutrivia.com/api/ws';
@@ -62,6 +64,11 @@ export class GameViewParticipantComponent implements OnInit {
         this.myUser = data;
         this.setTopics();
         this.connect();
+        this.gameDataService.getQuestionNumber(this.myUser.museumId).subscribe(
+          data => {
+            this.questionNumber = data
+          }
+        )
       }
     )
   }
@@ -206,6 +213,7 @@ export class GameViewParticipantComponent implements OnInit {
     this.clicked = false;
     this.pauseTimer();
     let question: Question = JSON.parse(message.body);
+    this.questionIndex = this.questionIndex + 1
     this.currentQuestion = question;
     this.isAnswerCorrect = false;
     this.resetTimer();

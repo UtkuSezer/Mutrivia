@@ -65,4 +65,8 @@ export class GameDataService {
   answerQuestion(userId: string){
     return this.http.get(`${GAME_API_URL}/answerquestion/${userId}`);
   }
+
+  getQuestionNumber(museumId: string){
+    return this.http.get<number>(`${GAME_API_URL}/sessionindex/${museumId}`);
+  }
 }

@@ -23,21 +23,21 @@ export class HeaderComponent implements OnInit {
         data => {
           this.gameDataService.endSession(sessionStorage.getItem('userId') as string).subscribe(
             data => {
-            sessionStorage.removeItem("isHost");
+              sessionStorage.removeItem("userId");
+              sessionStorage.removeItem("isHost");
             }
           )
         }
       )
     }
-
     else if(sessionStorage.getItem('isParticipant') == "true"){
       this.gameDataService.leaveSession(sessionStorage.getItem('userId') as string).subscribe(
         data => {
+          sessionStorage.removeItem("userId");
           sessionStorage.removeItem("isParticipant");
         }
       )
     }
-
     this.router.navigate(["register"]);
   }
 
