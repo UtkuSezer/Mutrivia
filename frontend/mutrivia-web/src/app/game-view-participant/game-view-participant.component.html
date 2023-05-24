@@ -1,10 +1,9 @@
-
 <div *ngIf="isGameStarted && !isGamePaused">
     <div class="progress-bar-container">
         <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
     </div>
     <div class="d-flex justify-content-center align-items-center" style="min-height: 20vh;" *ngIf="!currentQuestion">
-        <div class="spinner-grow text-warning" role="status"></div>
+        <div class="spinner-grow text-warning" style="z-index:-1;" role="status"></div>
     </div>
     <div class="row" style="background-color: transparent;">
         <div class="mt-4">
