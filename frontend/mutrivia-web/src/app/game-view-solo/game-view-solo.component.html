@@ -1,10 +1,14 @@
 
+<div class="welcome" style="z-index:0;">
+    <span id="splash-overlay" class="splash"></span>
+    <span id="welcome" class="z-depth-4"></span>
+
 <div *ngIf="!isGamePaused">
     <div class="progress-bar-container">
         <div class="progress-bar" [ngStyle]="{'width': timerRatioString}"></div>
     </div>
     <div class="d-flex justify-content-center align-items-center" style="min-height: 20vh;" *ngIf="!currentQuestion">
-        <div class="spinner-grow text-warning" role="status"></div>
+        <div class="spinner-grow text-warning" style="z-index:-1;" role="status"></div>
     </div>
     <div class="row" style="background-color: transparent;">
 
