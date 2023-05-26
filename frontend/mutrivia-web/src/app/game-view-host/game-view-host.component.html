@@ -25,8 +25,8 @@
                 <button [disabled]="clicked" (click)="onClickOption(i)" id="{{i}}" type="button" class="option-div btn btn-outline-secondary mt-3 btn-block">{{choice}}</button> <!-- btn btn-outline-secondary mt-3 btn-block -->
             </div>
         </div>
-        <button (click)="onClickEndSession()" type="submit" class="end-button" *ngIf="!endSessionClicked">End Quiz</button>
-        <button class="end-button" type="button" disabled *ngIf="endSessionClicked">
+        <button (click)="onClickEndSession()" type="submit" class="btn btn-danger btn-login end-button" *ngIf="!endSessionClicked">End Quiz</button>
+        <button class="btn btn-danger btn-login end-button" type="button" disabled *ngIf="endSessionClicked">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Ending...
         </button>
