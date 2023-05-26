@@ -136,9 +136,12 @@ iframe {
 }
 
 .wrap-table100 {
-    width: 960px;
-    border-radius: 10px;
-    overflow: hidden
+  width: 960px;
+  border-radius: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-sizing: border-box; 
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .table {
@@ -505,46 +508,3 @@ iframe {
     box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
     border: none;
   }
-  
-  /* Countdown Timer */  
-    #countdown {
-      position: relative;
-      margin: auto;
-      height: 40px;
-      width: 40px;
-      text-align: center;
-    }
-    
-    #countdown-number {
-      color: black;
-      display: inline-block;
-      line-height: 40px;
-    }
-    
-    svg {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      height: 40px;
-      transform: rotateY(-180deg) rotateZ(-90deg);
-    }
-    
-    svg circle {
-      stroke-dasharray: 113px;
-      stroke-dashoffset: 0px;
-      stroke-linecap: round;
-      stroke-width: 2px;
-      stroke: black;
-      fill: none;
-      animation: countdown 30s linear infinite forwards;
-    }
-    
-    @keyframes countdown {
-      from {
-        stroke-dashoffset: 0px;
-      }
-      to {
-        stroke-dashoffset: 113px;
-      }
-    }
