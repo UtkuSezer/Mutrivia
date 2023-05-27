@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://mutrivia.com")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {

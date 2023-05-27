@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://mutrivia.com")
 @RestController
 @RequestMapping("/api/game")
 public class GameController {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="http://mutrivia.com")
 @RestController
 @RequestMapping("/api/user")
 @Log4j
