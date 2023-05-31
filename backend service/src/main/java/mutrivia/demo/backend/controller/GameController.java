@@ -53,7 +53,7 @@ public class GameController {
     }
 
     @GetMapping("/checkpause/{sessionId}")
-    public boolean checkPause(@PathVariable String sessionId){
+    public int checkPause(@PathVariable String sessionId){
         return gameService.checkPauseMap(sessionId);
     }
 
