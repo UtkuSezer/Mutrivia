@@ -52,13 +52,13 @@
     <div *ngIf="isAnswerCorrect && (questionIndex == questionNumber)" class="mt-4 alert alert-success" role="alert">
         Your Answer is Correct! Waiting for Quiz to End...
     </div>
-    <div *ngIf="isAnswerCorrect" class="mt-4 alert alert-success" role="alert">
+    <div *ngIf="isAnswerCorrect && (questionIndex != questionNumber)" class="mt-4 alert alert-success" role="alert">
         Your Answer is Correct! Waiting for the Next Question...
     </div>
     <div *ngIf="!isAnswerCorrect && (questionIndex == questionNumber)" class="mt-4 alert alert-danger" role="alert">
         Your Answer is Wrong. Waiting for Quiz to End...
     </div>
-    <div *ngIf="!isAnswerCorrect" class="mt-4 alert alert-danger" role="alert">
+    <div *ngIf="!isAnswerCorrect && (questionIndex != questionNumber)" class="mt-4 alert alert-danger" role="alert">
         Your Answer is Wrong. Waiting for the Next Question...
     </div>
     <h5>Current Scores:</h5>
