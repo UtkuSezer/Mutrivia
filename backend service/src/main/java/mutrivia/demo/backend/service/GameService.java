@@ -192,15 +192,18 @@ public class GameService {
         sessionIdPausedUserCountMap.put(sessionId, currentUserCount-1);
     }
 
-    public boolean checkPauseMap(String sessionId){
-        if(sessionIdPausedUserCountMap.get(sessionId)==1){
-            List<User> usersInSession = userService.findUsersInSession(sessionId);
-            sessionIdPausedUserCountMap.put(sessionId, usersInSession.size());
-            return true;
+    public int checkPauseMap(String sessionId){
+        if(sessionIdPausedUserCountMap.containsKey(sessionId)){
+            if(sessionIdPausedUserCountMap.get(sessionId)==1){
+                List<User> usersInSession = userService.findUsersInSession(sessionId);
+                sessionIdPausedUserCountMap.put(sessionId, usersInSession.size());
+                return 1;
+            }
+            else{
+                return 2;
+            }
         }
-        else{
-            return false;
-        }
+        return 3;
     }
 
     public void answerQuestion(String userId){

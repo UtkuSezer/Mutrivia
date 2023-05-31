@@ -226,14 +226,17 @@ export class GameViewHostComponent implements OnInit {
           this.pauseTimerFlag = false;
           this.gameDataService.checkPause(this.myUser.sessionId).subscribe(
             data => {
-              if(data == true){
+              if(data == 1){
                 this.onClickGenerateQuestion();
                 //this.isGamePaused = false;
                 this.pausePauseTimer();
               }
-              else{
+              else if(data == 2){
                 this.pauseTimeLeft = 3;
                 this.pauseTimerFlag = true;
+              }
+              else{
+                
               }
             }
           )
