@@ -43,7 +43,10 @@ def callback(ch, method, properties, body):
         question_statement = question['question_statement']
         options_list = question['options']
         random_option_index = random.randint(0, len(question['options']))
-        options_list.insert(random_option_index, question['answer'])
+        firstLetter = question['answer'][0].upper()
+	    answer = question['answer']
+	    new_answer = firstLetter + answer[1:]
+        options_list.insert(random_option_index, new_answer)
         generated_question = Question(question_statement, options_list, random_option_index, text_data_id)
 
         sender_connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
