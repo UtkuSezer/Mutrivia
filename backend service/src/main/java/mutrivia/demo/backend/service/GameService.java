@@ -188,8 +188,10 @@ public class GameService {
     }
 
     public void updatePauseMap(String sessionId){
-        int currentUserCount = sessionIdPausedUserCountMap.get(sessionId);
-        sessionIdPausedUserCountMap.put(sessionId, currentUserCount-1);
+        if(sessionIdPausedUserCountMap.containsKey(sessionId)){
+            int currentUserCount = sessionIdPausedUserCountMap.get(sessionId);
+            sessionIdPausedUserCountMap.put(sessionId, currentUserCount-1);
+        }
     }
 
     public int checkPauseMap(String sessionId){
